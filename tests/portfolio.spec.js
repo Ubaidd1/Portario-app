@@ -1,0 +1,195 @@
+import { test, expect } from '@playwright/test'
+
+const routes = ['/', '/about', '/services', '/services/web-development', '/services/app-development', '/services/ai-ml', '/services/python-data-science', '/services/seo', '/services/social-media', '/services/ui-ux', '/services/cms', '/projects', '/projects/forma', '/projects/frequency', '/projects/nova', '/projects/orange', '/process', '/experience', '/contact']
+
+for (const route of routes) {
+  test(`route ${route} renders accessibly at desktop, tablet and mobile`, async ({ page }) => {
+    const errors = []
+    page.on('pageerror', error => errors.push(error.message))
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.goto(route)
+    await expect(page.locator('main h1')).toHaveCount(1)
+    await expect(page.locator('main h1')).toBeVisible()
+    await expect(page).toHaveTitle(/Folioblox/)
+    await expect(page.locator('meta[name="description"]')).toHaveCount(1)
+    await expect(page.locator('header')).toHaveCount(1)
+    await expect(page.locator('footer')).toHaveCount(1)
+    for (const width of [1440, 768, 320]) {
+      await page.setViewportSize({ width, height: 1000 })
+      const size = await page.evaluate(() => ({ width: innerWidth, content: document.documentElement.scrollWidth }))
+      expect(size.content, `${route} overflows at ${width}`).toBeLessThanOrEqual(size.width)
+    }
+    expect(errors).toEqual([])
+  })
+}
+
+test('all requested breakpoints keep homepage within viewport', async ({ page }) => {
+  await page.goto('/')
+  for (const width of [320, 375, 390, 414, 768, 1024, 1280, 1440, 1920]) {
+    await page.setViewportSize({ width, height: 1000 })
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy()
+  }
+})
+
+test('desktop menu, page transitions, route focus and metadata', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 })
+  await page.goto('/')
+  const menu = page.getByRole('button', { name: 'Explore services' })
+  await menu.click()
+  await expect(menu).toHaveAttribute('aria-expanded', 'true')
+  await page.keyboard.press('Escape')
+  await expect(menu).toBeFocused()
+  await expect(menu).toHaveAttribute('aria-expanded', 'false')
+  await menu.click()
+  await page.locator('#services-menu').getByRole('link', { name: /AI \/ ML/ }).click()
+  await expect(page).toHaveURL(/\/services\/ai-ml$/)
+  await expect(page.locator('main h1')).toContainText('MAKE INTELLIGENCE USEFUL.')
+  await expect(page.locator('main')).toBeFocused()
+  await expect(page).toHaveTitle('AI / ML — Folioblox')
+  await page.getByRole('link', { name: 'Discuss your project' }).click()
+  await expect(page).toHaveURL(/\/contact\?service=/)
+  await page.getByLabel('Build something new').check()
+  await page.getByRole('button', { name: 'Continue' }).click()
+  await expect(page.getByRole('combobox')).toHaveValue('AI / ML')
+})
+
+test('mobile navigation traps and restores focus', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/')
+  const open = page.getByRole('button', { name: 'Open menu' })
+  await open.click()
+  const menu = page.getByRole('dialog', { name: 'Navigation menu' })
+  await expect(page.getByRole('button', { name: 'Close menu' })).toBeFocused()
+  await page.keyboard.press('Shift+Tab')
+  await expect(menu.getByRole('link', { name: 'Contact', exact: true })).toBeFocused()
+  await page.keyboard.press('Escape')
+  await expect(menu).toHaveCount(0)
+  await expect(open).toBeFocused()
+  await open.click()
+  await menu.getByRole('link', { name: 'Projects', exact: true }).click()
+  await expect(page).toHaveURL(/\/projects$/)
+  await expect(page.locator('main h1')).toBeVisible()
+  await expect(menu).toHaveCount(0)
+})
+
+test('project filters support empty states and browser history', async ({ page }) => {
+  await page.goto('/projects')
+  await expect(page.locator('main article')).toHaveCount(4)
+  await page.getByRole('button', { name: 'Data', exact: true }).click()
+  await expect(page.locator('main article')).toHaveCount(1)
+  await expect(page.getByRole('heading', { name: 'Frequency Analytics' })).toBeVisible()
+  await page.getByRole('button', { name: 'App', exact: true }).click()
+  await expect(page.getByRole('heading', { name: 'Room for what comes next.' })).toBeVisible()
+  await page.goBack()
+  await expect(page.getByRole('button', { name: 'Data', exact: true })).toHaveAttribute('aria-pressed', 'true')
+  await page.getByRole('button', { name: 'All', exact: true }).click()
+  await expect(page.locator('main article')).toHaveCount(4)
+})
+
+test('case-study architecture, gallery, drag and related navigation', async ({ page }) => {
+  await page.goto('/projects/forma')
+  await page.getByRole('button', { name: /API boundary/ }).click()
+  await expect(page.getByText('A proposed service layer keeps data access separate from presentation.')).toBeVisible()
+  const open = page.getByRole('button', { name: 'Open Workspace overview' })
+  await open.click()
+  const dialog = page.getByRole('dialog', { name: 'Forma Workspace gallery' })
+  await expect(dialog).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Close gallery' })).toBeFocused()
+  await page.keyboard.press('ArrowRight')
+  await expect(dialog.locator('[aria-live="polite"]').first()).toHaveText('Task hierarchy')
+  await page.getByRole('button', { name: 'Next gallery image' }).click()
+  await expect(dialog.locator('[aria-live="polite"]').first()).toHaveText('Component detail')
+  await page.keyboard.press('Escape')
+  await expect(dialog).toHaveCount(0)
+  await expect(open).toBeFocused()
+  await page.getByRole('navigation', { name: 'project navigation' }).getByRole('link', { name: /NEXT PROJECT/ }).click()
+  await expect(page).toHaveURL(/\/projects\/frequency$/)
+})
+
+test('guided enquiry validates, keeps back state, reviews and downloads a draft', async ({ page }) => {
+  await page.goto('/contact')
+  const next = page.getByRole('button', { name: 'Continue' })
+  await next.click()
+  await expect(page.getByText('Choose a starting point for the conversation.')).toBeVisible()
+  await page.getByLabel('Improve an existing product').check()
+  await next.click()
+  await next.click()
+  await expect(page.getByText('Choose a service to get started.')).toBeVisible()
+  await page.getByRole('combobox').selectOption('Web Development')
+  await next.click()
+  await page.getByLabel('Tell me about your project').fill('A responsive application with a useful, accessible project workspace.')
+  await page.getByRole('button', { name: 'Back', exact: true }).click()
+  await expect(page.getByRole('combobox')).toHaveValue('Web Development')
+  await next.click()
+  await expect(page.getByLabel('Tell me about your project')).toHaveValue(/responsive application/)
+  await next.click()
+  await next.click()
+  await expect(page.getByLabel('First Name')).toBeFocused()
+  await page.getByLabel('First Name').fill('Alex')
+  await page.getByLabel('Last Name').fill('Tester')
+  await page.getByLabel('Email Address').fill('alex@example.com')
+  await next.click()
+  await expect(page.getByText('Alex Tester · alex@example.com')).toBeVisible()
+  await page.getByRole('button', { name: 'Submit enquiry' }).click()
+  await expect(page.getByText('Please agree to share your details for this enquiry.')).toBeVisible()
+  await page.getByLabel('I agree to share these details').check()
+  await page.getByRole('button', { name: 'Submit enquiry' }).click()
+  await expect(page.getByRole('heading', { name: 'Your enquiry is ready.' })).toBeVisible()
+  await expect(page.getByText(/Your details have been checked, but not sent/)).toBeVisible()
+  const download = page.waitForEvent('download')
+  await page.getByRole('button', { name: 'Download your enquiry' }).click()
+  expect((await download).suggestedFilename()).toBe('folioblox-project-enquiry.txt')
+  await page.getByRole('button', { name: 'Edit your enquiry' }).click()
+  await expect(page.getByText('Alex Tester · alex@example.com')).toBeVisible()
+})
+
+test('homepage interactions, preserved preview, FAQ and technology selection', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Next project', exact: true }).click()
+  const projects = page.getByRole('region', { name: 'Selected projects', exact: true })
+  await expect(projects.getByRole('heading', { name: 'Frequency Analytics' })).toBeVisible()
+  await page.getByRole('button', { name: 'Quick Preview' }).click()
+  await expect(page.getByRole('dialog')).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(page.getByRole('dialog')).toHaveCount(0)
+  await page.getByRole('button', { name: 'Next testimonial' }).click()
+  await expect(page.getByText('Jamie Parker', { exact: true })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Play testimonials' })).toBeVisible()
+  await page.getByRole('button', { name: 'Next award' }).click()
+  await expect(page.getByRole('heading', { name: 'Indigo Design Award' })).toBeVisible()
+  await page.locator('#faq-button-1').click()
+  await expect(page.locator('#faq-panel-1')).toBeVisible()
+  await expect(page.locator('#faq-panel-0')).toHaveCount(0)
+  await page.getByRole('button', { name: 'Python', exact: true }).click()
+  await expect(page.getByRole('button', { name: 'Python', exact: true })).toHaveAttribute('aria-pressed', 'true')
+})
+
+test('404 and missing detail routes are useful', async ({ page }) => {
+  for (const [route, text] of [['/missing', 'Page not found.'], ['/projects/missing', 'Project not found.'], ['/services/missing', 'Service not found.']]) {
+    await page.goto(route)
+    await expect(page.getByRole('heading', { name: text })).toBeVisible()
+    await expect(page.getByRole('link', { name: /Back to/ }).first()).toBeVisible()
+  }
+})
+
+test('reduced motion simplifies 3D, cursor and process', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/')
+  await expect(page.locator('.custom-cursor')).toHaveCount(0)
+  await expect(page.locator('.core-running')).toHaveCount(0)
+  await page.goto('/process')
+  await expect(page.locator('.process-journey')).toHaveCount(0)
+  await expect(page.getByRole('heading', { name: 'Growth', exact: true })).toBeVisible()
+})
+
+test('capture representative pages for visual review', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  for (const width of [1440, 768, 390]) {
+    await page.setViewportSize({ width, height: 1000 })
+    for (const route of ['/', '/about', '/services/ai-ml', '/projects', '/projects/forma', '/contact']) {
+      await page.goto(route)
+      await expect(page.locator('main h1')).toBeVisible()
+      await page.screenshot({ path: `test-results/${width}-${route.replaceAll('/', '-') || 'home'}.png` })
+    }
+  }
+})
