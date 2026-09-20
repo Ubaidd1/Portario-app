@@ -1,26 +1,19 @@
 import { useEffect, useRef } from 'react'
 import { useInView, useReducedMotion } from 'framer-motion'
 
-const PALETTE = ['#f04436', '#ff6a4f', '#ff9c7a', '#c92b20']
-const LINK_DISTANCE = 108
-const COUNT_DESKTOP = 38
-const COUNT_MOBILE = 20
+const PALETTE = ['#f04436', '#ff6a4f', '#eae7e0', '#8b8b86']
+const RIBBON_COUNT = 5
+const SEGMENTS = 64
 
-function noise(x, y, t) {
-  return (
-    Math.sin(x * 1.4 + t) * Math.cos(y * 1.2 - t * 0.9) +
-    Math.sin((x + y) * 0.8 - t * 1.3) * 0.6
-  )
-}
-
-function makeParticles(count, w, h) {
-  return Array.from({ length: count }, (_, i) => ({
-    x: Math.random() * w,
-    y: Math.random() * h,
-    seed: Math.random() * 1000,
-    r: 1 + Math.random() * 1.6,
+function makeRibbons() {
+  return Array.from({ length: RIBBON_COUNT }, (_, i) => ({
     color: PALETTE[i % PALETTE.length],
-    pulse: Math.random() * Math.PI * 2,
+    phase: (Math.PI * 2 * i) / RIBBON_COUNT,
+    tilt: (i / RIBBON_COUNT) * Math.PI * 0.6,
+    twist: 1.6 + i * 0.35,
+    radiusScale: 0.72 + (i % 3) * 0.1,
+    speed: 0.9 + (i % 3) * 0.12,
+    thickness: i === 0 ? 2.4 : 1.2 + (i % 2) * 0.5,
   }))
 }
 
@@ -39,9 +32,14 @@ export default function Sculpture({ compact = false }) {
     let width = 0,
       height = 0,
       dpr = Math.min(window.devicePixelRatio || 1, 2)
-    let particles = []
+    let ribbons = makeRibbons()
     let raf = null
     let t = 0
+    let rotation = 0
+    let rotationVel = 0.0026
+    let tilt = 0
+    let pointerYaw = 0
+    let pointerPitch = 0
 
     const size = () => {
       const rect = wrap.getBoundingClientRect()
@@ -52,90 +50,108 @@ export default function Sculpture({ compact = false }) {
       canvas.style.width = `${width}px`
       canvas.style.height = `${height}px`
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      const desktop = width >= 380
-      particles = makeParticles(desktop ? COUNT_DESKTOP : COUNT_MOBILE, width, height)
     }
 
     const ro = new ResizeObserver(size)
     ro.observe(wrap)
     size()
 
-    const drawStatic = () => {
-      ctx.clearRect(0, 0, width, height)
-      particles.forEach((p) => {
-        ctx.beginPath()
-        ctx.fillStyle = p.color
-        ctx.globalAlpha = 0.7
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-        ctx.fill()
+    const project = (x, y, z, cx, cy, focal) => {
+      const scale = focal / (focal + z)
+      return { x: cx + x * scale, y: cy + y * scale, scale }
+    }
+
+    const drawRibbon = (ribbon, time, cx, cy, radius, focal, pointerTiltX, pointerTiltY) => {
+      const points = []
+      for (let s = 0; s <= SEGMENTS; s++) {
+        const u = s / SEGMENTS
+        const angle = ribbon.phase + rotation * ribbon.speed + u * Math.PI * ribbon.twist
+        const bob = Math.sin(time * 0.6 + ribbon.phase + u * Math.PI * 2) * radius * 0.12
+        const breathe = 0.85 + Math.sin(time * 0.35 + u * Math.PI * 3 + ribbon.phase) * 0.15
+
+        const r = radius * ribbon.radiusScale * breathe
+        let x = Math.cos(angle) * r
+        let z = Math.sin(angle) * r
+        let y = (u - 0.5) * radius * 1.5 + bob + Math.sin(time * 0.5 + ribbon.phase) * radius * 0.08
+
+        const tiltX = ribbon.tilt + tilt + pointerTiltY
+        const cosT = Math.cos(tiltX)
+        const sinT = Math.sin(tiltX)
+        const y2 = y * cosT - z * sinT
+        const z2 = y * sinT + z * cosT
+
+        const yaw = pointerTiltX
+        const cosY = Math.cos(yaw)
+        const sinY = Math.sin(yaw)
+        const x2 = x * cosY - z2 * sinY
+        const z3 = x * sinY + z2 * cosY
+
+        points.push(project(x2, y2, z3, cx, cy, focal))
+      }
+
+      ctx.beginPath()
+      points.forEach((p, i) => {
+        if (i === 0) ctx.moveTo(p.x, p.y)
+        else {
+          const prev = points[i - 1]
+          const mx = (prev.x + p.x) / 2
+          const my = (prev.y + p.y) / 2
+          ctx.quadraticCurveTo(prev.x, prev.y, mx, my)
+        }
       })
+
+      const avgScale = points.reduce((a, p) => a + p.scale, 0) / points.length
+      const alpha = Math.min(1, Math.max(0.18, avgScale - 0.35))
+
+      ctx.strokeStyle = ribbon.color
+      ctx.lineWidth = ribbon.thickness * avgScale
+      ctx.globalAlpha = alpha
+      ctx.shadowColor = ribbon.color
+      ctx.shadowBlur = 14 * avgScale
+      ctx.lineCap = 'round'
+      ctx.lineJoin = 'round'
+      ctx.stroke()
+      ctx.shadowBlur = 0
       ctx.globalAlpha = 1
     }
 
-    const step = () => {
-      t += 0.0032
+    const render = (time) => {
       ctx.clearRect(0, 0, width, height)
+      const cx = width / 2
+      const cy = height / 2 + Math.sin(time * 0.25) * height * 0.02
+      const radius = Math.min(width, height) * 0.34
+      const focal = Math.max(width, height) * 0.9
 
-      particles.forEach((p) => {
-        const angle = noise(p.x * 0.007, p.y * 0.007, t + p.seed) * Math.PI * 2
-        p.x += Math.cos(angle) * 0.4
-        p.y += Math.sin(angle) * 0.4
-        p.pulse += 0.02
+      const targetYaw =
+        pointer.current.inside && pointer.current.x != null
+          ? ((pointer.current.x - width / 2) / width) * 0.6
+          : 0
+      const targetPitch =
+        pointer.current.inside && pointer.current.y != null
+          ? ((pointer.current.y - height / 2) / height) * 0.35
+          : 0
 
-        if (pointer.current.inside && pointer.current.x != null) {
-          const dx = p.x - pointer.current.x
-          const dy = p.y - pointer.current.y
-          const dist = Math.hypot(dx, dy)
-          if (dist < 130 && dist > 0.01) {
-            const force = (1 - dist / 130) * 1.3
-            p.x += (dx / dist) * force
-            p.y += (dy / dist) * force
-          }
-        }
+      pointerYaw += (targetYaw - pointerYaw) * 0.04
+      pointerPitch += (targetPitch - pointerPitch) * 0.04
 
-        if (p.x < -20) p.x = width + 20
-        if (p.x > width + 20) p.x = -20
-        if (p.y < -20) p.y = height + 20
-        if (p.y > height + 20) p.y = -20
-      })
+      rotationVel += ((pointer.current.inside ? 0.0026 + targetYaw * 0.004 : 0.0026) - rotationVel) * 0.02
+      rotation += rotationVel
+      tilt = Math.sin(time * 0.18) * 0.18
 
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const a = particles[i],
-            b = particles[j]
-          const dx = a.x - b.x,
-            dy = a.y - b.y
-          const dist = Math.hypot(dx, dy)
-          if (dist < LINK_DISTANCE) {
-            ctx.beginPath()
-            ctx.strokeStyle = a.color
-            ctx.globalAlpha = (1 - dist / LINK_DISTANCE) * 0.22
-            ctx.lineWidth = 1
-            ctx.moveTo(a.x, a.y)
-            ctx.lineTo(b.x, b.y)
-            ctx.stroke()
-          }
-        }
-      }
-      ctx.globalAlpha = 1
+      const ordered = [...ribbons].sort((a, b) => Math.sin(a.phase + rotation) - Math.sin(b.phase + rotation))
+      ordered.forEach((ribbon) => drawRibbon(ribbon, time, cx, cy, radius, focal, pointerYaw, pointerPitch))
+    }
 
-      particles.forEach((p) => {
-        const glow = 0.55 + Math.sin(p.pulse) * 0.35
-        ctx.beginPath()
-        ctx.fillStyle = p.color
-        ctx.globalAlpha = glow
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-        ctx.fill()
-        ctx.globalAlpha = 1
-      })
-
+    const step = () => {
+      t += 0.012
+      render(t)
       if (visible && !reduced) raf = requestAnimationFrame(step)
     }
 
     if (visible && !reduced) {
       raf = requestAnimationFrame(step)
     } else {
-      drawStatic()
+      render(0)
     }
 
     const onMove = (e) => {
@@ -160,8 +176,6 @@ export default function Sculpture({ compact = false }) {
 
   return (
     <div ref={wrapRef} aria-hidden="true" className={`sculpture-stage ${compact ? 'compact' : ''}`}>
-      <div className="orbital orbital-one" />
-      <div className="orbital orbital-two" />
       <div className="sculpture-cross cross-one">+</div>
       <div className="sculpture-cross cross-two">+</div>
       <canvas ref={canvasRef} className="sculpture-canvas" />

@@ -245,23 +245,6 @@
     height: 100%;
     mix-blend-mode: screen;
   }
-  .orbital {
-    position: absolute;
-    width: 91%;
-    height: 74%;
-    border: 1px solid #ffffff0b;
-    border-radius: 50%;
-    top: 13%;
-    left: 4%;
-    transform: rotate(-30deg);
-  }
-  .orbital-two {
-    transform: rotate(38deg);
-    height: 95%;
-    top: 1%;
-    width: 75%;
-    left: 14%;
-  }
   .sculpture-cross {
     position: absolute;
     color: #aaa6;
