@@ -11,14 +11,14 @@ export default function AdjacentNavigation({ items, current, base, label }) {
     >
       <Link to={`${base}/${previous.slug}`} className="group">
         <span className="eyebrow text-muted">PREVIOUS {label.toUpperCase()}</span>
-        <span className="mt-3 flex items-center gap-3 text-lg tracking-tight transition-colors group-hover:text-accent">
+        <span className="mt-3 flex items-center gap-3 text-lg tracking-tight transition-colors group-hover:text-accent-soft">
           <ArrowLeft size={18} />
           {previous.title || previous.name}
         </span>
       </Link>
       <Link to={`${base}/${next.slug}`} className="group sm:text-right">
         <span className="eyebrow text-muted">NEXT {label.toUpperCase()}</span>
-        <span className="mt-3 flex items-center gap-3 text-lg tracking-tight transition-colors group-hover:text-accent sm:justify-end">
+        <span className="mt-3 flex items-center gap-3 text-lg tracking-tight transition-colors group-hover:text-accent-soft sm:justify-end">
           {next.title || next.name}
           <ArrowRight size={18} />
         </span>

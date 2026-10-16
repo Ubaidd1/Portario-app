@@ -34,7 +34,7 @@ function ProcessJourney() {
         <Container>
           <div className="mb-10 flex items-center justify-between">
             <p className="eyebrow text-muted">THE PROCESS / SCROLL TO EXPLORE</p>
-            <span className="font-mono text-xs text-accent">0{active + 1} / 07</span>
+            <span className="font-mono text-xs text-accent-soft">0{active + 1} / 07</span>
           </div>
           <div className="grid items-center gap-10 lg:grid-cols-[.5fr_1.2fr_1fr]">
             <div>
@@ -45,7 +45,7 @@ function ProcessJourney() {
                     key={item.title}
                     onClick={() => select(index)}
                     aria-current={active === index ? 'step' : undefined}
-                    className={`min-h-10 text-xs transition-colors ${active === index ? 'text-accent' : 'text-muted'}`}
+                    className={`min-h-10 text-xs transition-colors ${active === index ? 'text-accent-soft' : 'text-muted'}`}
                   >
                     {item.title}
                   </button>
@@ -64,7 +64,7 @@ function ProcessJourney() {
               </motion.div>
             </AnimatePresence>
             <div aria-live="polite">
-              <p className="eyebrow text-accent">{step.word}</p>
+              <p className="eyebrow text-accent-soft">{step.word}</p>
               <h2 className="mt-5 text-4xl tracking-tight">{step.title}</h2>
               <p className="mt-6 text-sm leading-8 text-muted">{step.description}</p>
               <div className="mt-8 border-t border-white/20 pt-5">

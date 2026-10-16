@@ -3,18 +3,20 @@ import { ArrowUpRight } from 'lucide-react'
 import Container from '../common/Container'
 import FadeIn from '../animations/FadeIn'
 import Sculpture from '../visuals/Sculpture'
-export default function About() {
+export default function About({ number = '02' }) {
   return (
     <section id="about" className="section-space">
       <Container>
         <FadeIn className="grid gap-8 md:grid-cols-[1fr_3fr]">
           <div>
             <p className="eyebrow">
-              <span className="text-accent">02</span> / ABOUT
+              <span className="text-accent-soft">{number}</span> / ABOUT ME
             </p>
-            <span className="mt-9 hidden text-[130px] leading-none tracking-[-.1em] text-white/[.07] md:block">
-              02
-            </span>
+            <span
+              aria-hidden="true"
+              data-text={number}
+              className="decorative-text mt-9 hidden text-[130px] leading-none tracking-[-.1em] text-white/[.07] md:block"
+            />
           </div>
           <div>
             <h2 className="section-title max-w-3xl">
@@ -27,7 +29,7 @@ export default function About() {
             <div className="mt-9 grid gap-7 md:grid-cols-2">
               <p className="text-xl leading-relaxed tracking-tight">
                 Bringing code and creativity together to build useful products
-                <span className="text-accent">.</span>
+                <span className="text-accent-soft">.</span>
               </p>
               <p className="text-sm leading-7 text-muted">
                 I turn complex ideas into clear digital experiences. From the first prototype to a
@@ -41,7 +43,7 @@ export default function About() {
           </div>
         </FadeIn>
         <FadeIn className="about-visual mt-14">
-          <div className="absolute left-6 top-6 z-10 flex items-center gap-2 font-mono text-[10px] text-muted">
+          <div className="absolute left-6 top-6 z-10 flex items-center gap-2 font-mono text-[11px] text-muted">
             <span className="h-1 w-1 bg-accent" />
             THE INTERSECTION OF LOGIC & IMAGINATION
           </div>
@@ -62,7 +64,11 @@ export default function About() {
           <div className="about-sculpture">
             <Sculpture compact />
           </div>
-          <ArrowUpRight className="absolute right-6 top-6 text-accent" size={24} />
+          <ArrowUpRight
+            className="absolute right-6 top-6 text-accent-soft"
+            size={24}
+            aria-hidden="true"
+          />
         </FadeIn>
       </Container>
     </section>

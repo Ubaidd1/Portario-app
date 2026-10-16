@@ -6,14 +6,14 @@ import { services } from '../../data/services'
 import Container from '../common/Container'
 import SectionTitle from '../common/SectionTitle'
 import FadeIn from '../animations/FadeIn'
-export default function Services() {
+export default function Services({ number = '04' }) {
   const [active, setActive] = useState(0)
   return (
     <section id="services" className="section-space border-t border-white/10">
       <Container>
         <div className="mb-14 grid gap-7 lg:grid-cols-[1fr_1fr]">
           <SectionTitle
-            number="04"
+            number={number}
             label="SERVICES"
             title={
               <>
@@ -51,7 +51,7 @@ export default function Services() {
                     </span>
                     <Plus
                       size={21}
-                      className={`shrink-0 transition-transform ${active === index ? 'rotate-45 text-accent' : 'text-muted'}`}
+                      className={`shrink-0 transition-transform ${active === index ? 'rotate-45 text-accent-soft' : 'text-muted'}`}
                     />
                   </button>
                 </h3>
@@ -82,14 +82,14 @@ export default function Services() {
                           </div>
                           <Link
                             to={`/services/${service.slug}`}
-                            className="mt-5 inline-flex items-center gap-2 text-xs text-accent"
+                            className="mt-5 inline-flex items-center gap-2 text-xs text-accent-soft"
                           >
                             Explore this service <ArrowUpRight size={15} />
                           </Link>
                         </div>
                         <div
                           aria-hidden="true"
-                          className="service-symbol hidden items-center justify-center text-6xl text-accent md:flex"
+                          className="service-symbol hidden items-center justify-center text-6xl text-accent-soft md:flex"
                         >
                           {service.symbol}
                         </div>

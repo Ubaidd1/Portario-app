@@ -1,46 +1,38 @@
-export const experience = [
+/**
+ * Professional history, newest first. The Experience section and the experience
+ * timeline only appear once at least one verified entry exists. Example:
+ * {
+ *   role: 'Full-Stack Developer',
+ *   organisation: 'Company name',
+ *   url: 'https://…',                 // optional
+ *   period: '2024 — Present',
+ *   type: 'Freelance',                // Full-time | Contract | Freelance | Open source…
+ *   summary: 'One or two sentences about the scope of the work.',
+ *   highlights: ['Specific, verifiable contribution', '…'],
+ *   technologies: ['React', 'Node.js'],
+ * }
+ */
+export const experience = []
+
+/** Ways a client can work together. Shown on the Experience page. */
+export const engagements = [
   {
-    title: 'Professional Experience',
-    status: 'Details to be added',
-    description: 'Verified roles, responsibilities, and dates will appear here when supplied.',
-    entries: [],
-  },
-  {
-    title: 'Freelance Projects',
-    status: 'Open to collaboration',
+    title: 'Project builds',
     description:
-      'Project-based development, from a defined first version to a considered handover.',
-    entries: [],
+      'A defined website, web app, or integration, scoped together and delivered in stages with regular demos and a documented handover.',
   },
   {
-    title: 'Client Work',
-    status: 'No verified case studies published',
-    description: 'Client-approved work will be published with permission and appropriate context.',
-    entries: [],
-  },
-  {
-    title: 'Technical Projects',
-    status: 'Concept studies available',
+    title: 'Technical partnership',
     description:
-      'Explore interface, AI workflow, and analytics concepts in the selected work collection.',
-    to: '/projects',
-    entries: [],
+      'Ongoing development support for a founder or small team: planning, building, reviewing, and keeping the product moving.',
   },
   {
-    title: 'Open Source',
-    status: 'Contributions to be added',
-    description: 'Public repository links and contribution details can be added when available.',
-    entries: [],
-  },
-  {
-    title: 'Learning',
-    status: 'An ongoing practice',
+    title: 'Improve what exists',
     description:
-      'A space for documented experiments, technical questions, and lessons from building.',
-    to: '/about#lab',
-    entries: [],
+      'Performance, accessibility, SEO, and code-quality work on an existing product, prioritised by impact.',
   },
 ]
+
 export const principles = [
   {
     title: 'Start with the problem.',
@@ -89,10 +81,4 @@ export const journey = [
     description:
       'Use feedback to improve the work. Keep the parts that help, and simplify the parts that do not.',
   },
-]
-export const stats = [
-  { value: 'FULL—STACK', label: 'From interface to integration' },
-  { value: 'AI + DATA', label: 'Intelligence with a purpose' },
-  { value: 'WEB + APP', label: 'Experiences across screens' },
-  { value: 'REMOTE', label: 'A worldwide way of working' },
 ]

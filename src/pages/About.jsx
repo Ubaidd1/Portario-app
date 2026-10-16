@@ -27,7 +27,7 @@ export default function About() {
               <DigitalCore variant="about" />
             </div>
             <FadeIn>
-              <p className="eyebrow text-accent">01 / A CONNECTED WAY OF THINKING</p>
+              <p className="eyebrow text-accent-soft">01 / A CONNECTED WAY OF THINKING</p>
               <h2 className="section-title mt-6">
                 The best work lives
                 <br />
@@ -53,7 +53,7 @@ export default function About() {
           <div className="mt-12 grid gap-x-16 gap-y-10 md:grid-cols-2">
             {principles.map((item, index) => (
               <FadeIn key={item.title} className="border-t border-white/20 pt-6">
-                <span className="font-mono text-xs text-accent">0{index + 1}</span>
+                <span className="font-mono text-xs text-accent-soft">0{index + 1}</span>
                 <h3 className="mt-5 text-2xl tracking-tight">{item.title}</h3>
                 <p className="mt-4 max-w-lg text-sm leading-7 text-muted">{item.description}</p>
               </FadeIn>

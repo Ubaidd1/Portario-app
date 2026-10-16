@@ -24,7 +24,7 @@ export default function TechMarquee() {
                   key={tech}
                 >
                   {tech}
-                  <span className="text-sm text-accent">✳</span>
+                  <span className="text-sm text-accent-soft">✳</span>
                 </span>
               ))}
             </div>

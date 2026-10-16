@@ -1,4 +1,4 @@
-import { serviceDetails } from './serviceDetails'
+import { serviceDetails } from './serviceDetails.js'
 
 const baseServices = [
   {

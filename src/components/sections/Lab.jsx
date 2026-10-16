@@ -4,7 +4,7 @@ import Container from '../common/Container'
 import SectionTitle from '../common/SectionTitle'
 import DigitalCore from '../visuals/DigitalCore'
 import ServiceVisual from '../visuals/ServiceVisual'
-export default function Lab() {
+export default function Lab({ number = '04' }) {
   const [index, setIndex] = useState(1)
   const [moving, setMoving] = useState(true)
   const experiment = experiments[index]
@@ -12,7 +12,7 @@ export default function Lab() {
     <section id="lab" className="section-space bg-surface">
       <Container>
         <SectionTitle
-          number="04"
+          number={number}
           label="ONGOING EXPLORATION"
           title="The lab."
           description="Experiments, prototypes, and ideas that may become something bigger."
@@ -22,7 +22,7 @@ export default function Lab() {
             {experiments.map((item, i) => (
               <button
                 key={item.title}
-                className={`lab-tab group flex w-full items-center gap-4 border-b border-white/10 py-5 text-left ${index === i ? 'text-accent' : ''}`}
+                className={`lab-tab group flex w-full items-center gap-4 border-b border-white/10 py-5 text-left ${index === i ? 'text-accent-soft' : ''}`}
                 onClick={() => setIndex(i)}
                 aria-pressed={index === i}
               >
@@ -54,7 +54,7 @@ export default function Lab() {
             </div>
             <div className="mt-6 flex items-center justify-between">
               <h3 className="text-xl tracking-tight">{experiment.title}</h3>
-              <span className="tag text-accent">{experiment.status}</span>
+              <span className="tag text-accent-soft">{experiment.status}</span>
             </div>
             <p className="mt-3 max-w-lg text-sm leading-7 text-muted">{experiment.detail}</p>
           </div>

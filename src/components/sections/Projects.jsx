@@ -3,12 +3,13 @@ import { createPortal } from 'react-dom'
 import { useCallback, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowUpRight, X } from 'lucide-react'
-import { projects } from '../../data/projects'
 import useFocusTrap from '../../hooks/useFocusTrap'
 import Container from '../common/Container'
 import SectionTitle from '../common/SectionTitle'
 import SliderControls from '../common/SliderControls'
-import ProjectVisual from '../visuals/ProjectVisual'
+import ProjectMedia from '../project/ProjectMedia'
+import ProjectLinks from '../project/ProjectLinks'
+import { projects, statusLabels } from '../../data/projects'
 import Button from '../common/Button'
 function ProjectDialog({ project, close }) {
   const ref = useRef(null)
@@ -31,7 +32,9 @@ function ProjectDialog({ project, close }) {
         className="relative max-h-[90dvh] w-full max-w-3xl overflow-y-auto border border-white/15 bg-surface p-6 sm:p-10"
       >
         <div className="mb-7 flex justify-between">
-          <span className="eyebrow text-accent">PROJECT STUDY / {project.year}</span>
+          <span className="eyebrow text-accent-soft">
+            {statusLabels[project.status]?.toUpperCase()} / {project.year}
+          </span>
           <button aria-label="Close project" className="icon-button" onClick={close}>
             <X size={20} />
           </button>
@@ -40,7 +43,7 @@ function ProjectDialog({ project, close }) {
           {project.title}
         </h2>
         <p className="mt-4 text-muted">{project.description}</p>
-        <ProjectVisual kind={project.kind} className="my-7 !min-h-0 !h-[300px]" />
+        <ProjectMedia project={project} className="my-7 !min-h-0 !h-[300px]" />
         <h3 className="text-xl font-medium">The idea</h3>
         <p className="mt-3 text-sm leading-7 text-muted">{project.summary}</p>
         <h3 className="mt-6 text-xl font-medium">The approach</h3>
@@ -52,18 +55,22 @@ function ProjectDialog({ project, close }) {
             </span>
           ))}
         </div>
-        <p className="mb-7 text-xs leading-6 text-muted">
-          Illustrative concept using sample data. No live client deployment or measured outcomes are
-          claimed.
-        </p>
-        <Button to={`/projects/${project.slug}`} onClick={close}>
-          Explore the full case study
-        </Button>
+        {project.status === 'concept' && (
+          <p className="mb-7 text-xs leading-6 text-muted">
+            A self-initiated concept study with illustrative data.
+          </p>
+        )}
+        <div className="flex flex-wrap gap-3">
+          <Button to={`/projects/${project.slug}`} onClick={close}>
+            Read the case study
+          </Button>
+          <ProjectLinks project={project} />
+        </div>
       </div>
     </motion.div>
   )
 }
-export default function Projects() {
+export default function Projects({ number = '03' }) {
   const [index, setIndex] = useState(0)
   const [selected, setSelected] = useState(null)
   const dragged = useRef(false)
@@ -79,7 +86,7 @@ export default function Projects() {
       <Container>
         <div className="mb-12 flex flex-col justify-between gap-7 md:flex-row md:items-end">
           <SectionTitle
-            number="03"
+            number={number}
             label="SELECTED WORK"
             title={
               <>
@@ -88,9 +95,11 @@ export default function Projects() {
                 <span className="text-muted">Made real.</span>
               </>
             }
-            description="Latest projects & technical explorations. Explore interfaces, application architecture, automation, and digital product studies."
+            description="Selected projects and technical explorations, from interface design to application architecture."
           />
-          <span className="eyebrow shrink-0 text-muted">SELECTED CONCEPTS / 2026</span>
+          <span className="eyebrow shrink-0 text-muted">
+            {String(projects.length).padStart(2, '0')} PROJECTS
+          </span>
         </div>
         <div
           role="region"
@@ -128,14 +137,14 @@ export default function Projects() {
               }}
               style={{ touchAction: 'pan-y' }}
             >
-              <ProjectVisual kind={project.kind} />
+              <ProjectMedia project={project} />
               <div className="flex flex-col p-6 sm:p-9 lg:p-10">
-                <div className="flex items-center justify-between font-mono text-[10px] text-muted">
+                <div className="flex items-center justify-between font-mono text-[11px] text-muted">
                   <span>PROJECT / {project.id}</span>
-                  <span>{project.year}</span>
+                  <span>{statusLabels[project.status]?.toUpperCase()}</span>
                 </div>
                 <div className="mt-10 lg:mt-auto">
-                  <span className="eyebrow text-accent">{project.category}</span>
+                  <span className="eyebrow text-accent-soft">{project.category}</span>
                   <h3 className="mt-4 text-3xl font-medium leading-tight tracking-[-.05em] sm:text-4xl">
                     {project.title}
                   </h3>
@@ -160,15 +169,15 @@ export default function Projects() {
                     Quick Preview{' '}
                     <ArrowUpRight
                       size={21}
-                      className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 text-accent"
+                      className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 text-accent-soft"
                     />
                   </button>
                   <Link
                     to={`/projects/${project.slug}`}
                     data-cursor="project"
-                    className="mt-4 inline-flex min-h-11 items-center gap-3 text-sm text-accent"
+                    className="mt-4 inline-flex min-h-11 items-center gap-3 text-sm text-accent-soft"
                   >
-                    View Project <ArrowUpRight size={17} />
+                    Read the case study <ArrowUpRight size={17} aria-hidden="true" />
                   </Link>
                 </div>
               </div>
@@ -197,13 +206,13 @@ export default function Projects() {
           >
             <div>
               <span className="eyebrow text-muted">UP NEXT / {next.id}</span>
-              <p className="mt-2 text-xl tracking-tight group-hover:text-accent transition-colors">
+              <p className="mt-2 text-xl tracking-tight group-hover:text-accent-soft transition-colors">
                 {next.title}
               </p>
             </div>
             <div className="flex items-center gap-6">
               <div className="hidden h-22 w-36 overflow-hidden sm:block" aria-hidden="true">
-                <ProjectVisual kind={next.kind} className="next-project-preview" />
+                <ProjectMedia project={next} className="next-project-preview" />
               </div>
               <ArrowUpRight className="text-muted" />
             </div>

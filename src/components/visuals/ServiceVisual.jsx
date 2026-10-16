@@ -18,18 +18,18 @@ export default function ServiceVisual({ type = 'browser', className = '' }) {
               <Code2 size={13} />
             </div>
             <div className="p-7">
-              <span className="eyebrow text-accent">FROM IDEA TO INTERFACE</span>
+              <span className="eyebrow text-accent-soft">FROM IDEA TO INTERFACE</span>
               <p className="mt-6 text-4xl font-medium tracking-tight">
                 Hello,
                 <br />
-                possibility<span className="text-accent">.</span>
+                possibility<span className="text-accent-soft">.</span>
               </p>
               <div className="mt-7 flex gap-3">
                 <span className="h-9 w-28 bg-accent" />
                 <span className="h-9 w-20 border border-white/20" />
               </div>
               <div className="mt-8 font-mono text-[10px] text-muted">
-                <span className="text-accent">const</span> future = build(idea)
+                <span className="text-accent-soft">const</span> future = build(idea)
               </div>
             </div>
           </div>
@@ -96,7 +96,7 @@ export default function ServiceVisual({ type = 'browser', className = '' }) {
           <div className="data-concept">
             <div className="flex justify-between">
               <span className="eyebrow text-muted">READING THE SIGNAL</span>
-              <span className="text-accent">↗</span>
+              <span className="text-accent-soft">↗</span>
             </div>
             <p className="mt-5 text-3xl tracking-tight">Clarity in the noise.</p>
             <div className="mt-8 flex h-40 items-end gap-2">
@@ -117,7 +117,7 @@ export default function ServiceVisual({ type = 'browser', className = '' }) {
         {type === 'search' && (
           <div className="search-concept">
             <div className="flex items-center gap-4 rounded-full border border-white/30 px-5 py-4">
-              <Search size={17} className="text-accent" />
+              <Search size={17} className="text-accent-soft" />
               <span className="text-sm">The right result.</span>
               <span className="ml-auto h-4 w-px animate-pulse bg-accent" />
             </div>
@@ -127,7 +127,7 @@ export default function ServiceVisual({ type = 'browser', className = '' }) {
               'A better way to be found',
             ].map((text, i) => (
               <div className="mt-5 border-b border-white/10 pb-4" key={text}>
-                <span className="font-mono text-[9px] text-accent">
+                <span className="font-mono text-[9px] text-accent-soft">
                   0{i + 1} / ORGANIC DISCOVERY
                 </span>
                 <p className="mt-2 text-lg">{text}</p>
@@ -157,19 +157,21 @@ export default function ServiceVisual({ type = 'browser', className = '' }) {
               </div>
               <p className="mt-7 text-5xl tracking-tight">Aa Bb</p>
               <div className="mt-6 flex gap-3">
-                {['#eeeae2', '#999995', '#f04436', '#101010'].map((color) => (
-                  <span
-                    key={color}
-                    className="h-10 w-10 rounded-full border border-white/20"
-                    style={{ background: color }}
-                  />
-                ))}
+                {['--color-light', '--color-muted', '--color-accent', '--color-background'].map(
+                  (color) => (
+                    <span
+                      key={color}
+                      className="h-10 w-10 rounded-full border border-white/20"
+                      style={{ background: `var(${color})` }}
+                    />
+                  ),
+                )}
               </div>
               <div className="mt-7 h-px bg-white/20" />
               <p className="mt-5 text-xs text-muted">A considered visual language.</p>
             </div>
             <div className="interface-toast">
-              <Check size={17} className="text-accent" />
+              <Check size={17} className="text-accent-soft" />
               Every detail, connected.
             </div>
           </div>
@@ -178,11 +180,11 @@ export default function ServiceVisual({ type = 'browser', className = '' }) {
           <div className="content-concept">
             <div className="mb-5 flex justify-between">
               <span className="eyebrow">YOUR CONTENT. YOUR CONTROL.</span>
-              <Layers size={16} className="text-accent" />
+              <Layers size={16} className="text-accent-soft" />
             </div>
             {['Create', 'Refine', 'Publish'].map((text, i) => (
               <div key={text} className="content-block">
-                <span className="font-mono text-xs text-accent">0{i + 1}</span>
+                <span className="font-mono text-xs text-accent-soft">0{i + 1}</span>
                 <span className="text-xl">{text}</span>
                 <span className="ml-auto text-muted">{i === 2 ? '↗' : '+'}</span>
               </div>

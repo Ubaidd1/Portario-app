@@ -5,7 +5,7 @@ import { testimonials } from '../../data/testimonials'
 import Container from '../common/Container'
 import SectionTitle from '../common/SectionTitle'
 import SliderControls from '../common/SliderControls'
-export default function Testimonials() {
+export default function Testimonials({ number = '08' }) {
   const [index, setIndex] = useState(0)
   const [paused, setPaused] = useState(false)
   const [hover, setHover] = useState(false)
@@ -28,6 +28,7 @@ export default function Testimonials() {
     setPaused(true)
     setIndex((value + testimonials.length) % testimonials.length)
   }
+  if (!testimonials.length) return null
   const current = testimonials[index],
     next = testimonials[(index + 1) % testimonials.length]
   return (
@@ -36,7 +37,7 @@ export default function Testimonials() {
         <div className="grid gap-12 lg:grid-cols-[1fr_1.7fr]">
           <div>
             <SectionTitle
-              number="08"
+              number={number}
               label="TESTIMONIALS"
               title={
                 <>
@@ -49,7 +50,6 @@ export default function Testimonials() {
             <p className="mt-5 max-w-xs text-sm leading-7 text-muted">
               What clients and collaborators say about working together.
             </p>
-            <p className="eyebrow mt-7 text-muted">ILLUSTRATIVE CLIENT VOICES</p>
           </div>
           <div
             className="min-w-0"
@@ -73,7 +73,7 @@ export default function Testimonials() {
               }
             }}
           >
-            <span aria-hidden="true" className="block h-18 text-8xl leading-none text-accent">
+            <span aria-hidden="true" className="block h-18 text-8xl leading-none text-accent-soft">
               “
             </span>
             <AnimatePresence mode="wait">

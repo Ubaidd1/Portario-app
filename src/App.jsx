@@ -27,9 +27,9 @@ function ApplicationRoutes() {
         >
           <Suspense
             fallback={
-              <div className="flex min-h-[75vh] items-center justify-center" role="status">
+              <div className="flex min-h-svh items-center justify-center" role="status">
                 <p className="eyebrow text-muted">
-                  PREPARING THE NEXT CHAPTER<span className="ml-3 text-accent">…</span>
+                  PREPARING THE NEXT CHAPTER<span className="ml-3 text-accent-soft">…</span>
                 </p>
               </div>
             }

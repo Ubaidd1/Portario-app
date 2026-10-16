@@ -35,12 +35,12 @@ export default function ArchitectureDiagram({ nodes }) {
                 <ArrowRight
                   aria-hidden="true"
                   size={15}
-                  className="absolute -right-4 top-1/2 hidden text-accent md:block"
+                  className="absolute -right-4 top-1/2 hidden text-accent-soft md:block"
                 />
                 <ArrowDown
                   aria-hidden="true"
                   size={15}
-                  className="mx-auto mt-3 text-accent md:hidden"
+                  className="mx-auto mt-3 text-accent-soft md:hidden"
                 />
               </>
             )}

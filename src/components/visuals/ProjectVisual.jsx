@@ -8,13 +8,19 @@ import {
   Search,
   Sparkles,
 } from 'lucide-react'
+const labels = {
+  forma: 'Forma workspace dashboard with task columns and team activity',
+  frequency: 'Frequency analytics dashboard with blue data charts',
+  nova: 'Nova AI assistant conversation interface',
+  indigo: 'Indigo Studio editorial website concept',
+}
 const bars = [28, 43, 35, 60, 47, 72, 62, 50, 81, 69, 92, 77, 62, 85, 100, 89]
 export default function ProjectVisual({ kind, className = '' }) {
   return (
     <div
       className={`project-visual visual-${kind} ${className}`}
       role="img"
-      aria-label={`${kind === 'forma' ? 'Forma workspace dashboard with task columns and team activity' : kind === 'frequency' ? 'Frequency analytics dashboard with red data charts' : kind === 'nova' ? 'Nova AI assistant conversation interface' : 'Orange Studio editorial website concept'}. Illustrative project concept.`}
+      aria-label={`${labels[kind] || 'Project interface'}. Illustrative project concept.`}
     >
       <div aria-hidden="true" className="project-art-inner">
         {kind === 'forma' && (
@@ -36,10 +42,10 @@ export default function ProjectVisual({ kind, className = '' }) {
                 <BarChart3 size={10} />
                 Insights
               </div>
-              <div className="mt-auto text-[8px] text-gray-500">YOUR WORK, IN FOCUS.</div>
+              <div className="mt-auto text-[8px] text-gray-600">YOUR WORK, IN FOCUS.</div>
             </aside>
             <div className="mock-main">
-              <div className="flex justify-between border-b border-black/10 pb-3 text-[8px] text-gray-500">
+              <div className="flex justify-between border-b border-black/10 pb-3 text-[8px] text-gray-600">
                 <span>Workspace / Overview</span>
                 <Search size={10} />
               </div>
@@ -48,11 +54,11 @@ export default function ProjectVisual({ kind, className = '' }) {
                   <div className="text-[17px] font-semibold tracking-tight">
                     Let’s make things happen.
                   </div>
-                  <div className="mt-1 text-[8px] text-gray-500">
+                  <div className="mt-1 text-[8px] text-gray-600">
                     A little focus goes a long way.
                   </div>
                 </div>
-                <span className="rounded bg-[#222] px-2 py-1 text-[7px] text-white">
+                <span className="rounded bg-ink px-2 py-1 text-[7px] text-white">
                   + New project
                 </span>
               </div>
@@ -63,7 +69,7 @@ export default function ProjectVisual({ kind, className = '' }) {
                   ['24', 'Tasks completed'],
                 ].map(([value, label]) => (
                   <div key={label} className="mock-stat">
-                    <span className="text-[8px] text-gray-500">{label}</span>
+                    <span className="text-[8px] text-gray-600">{label}</span>
                     <strong className="mt-2 block text-xl font-medium">
                       {value}
                       <span className="ml-2 text-[7px] text-accent">↗</span>
@@ -73,22 +79,22 @@ export default function ProjectVisual({ kind, className = '' }) {
               </div>
               <div className="mt-5 flex justify-between text-[10px] font-semibold">
                 <span>Your projects</span>
-                <span className="text-gray-500">•••</span>
+                <span className="text-gray-600">•••</span>
               </div>
               <div className="mt-3 grid grid-cols-3 gap-2">
                 {['To do', 'In progress', 'Complete'].map((label, i) => (
-                  <div className="rounded bg-[#ececea] p-2" key={label}>
-                    <span className="text-[7px] text-gray-500">● {label}</span>
+                  <div className="rounded bg-light p-2" key={label}>
+                    <span className="text-[7px] text-gray-600">● {label}</span>
                     {[0, 1].map((n) => (
                       <div key={n} className="mt-2 rounded bg-white p-2">
                         <div
-                          className={`h-1 w-8 rounded ${i === 1 ? 'bg-red-300' : 'bg-gray-300'}`}
+                          className={`h-1 w-8 rounded ${i === 1 ? 'bg-accent/50' : 'bg-gray-300'}`}
                         />
                         <p className="mt-2 text-[7px]">
                           {['Website experience', 'Design exploration', 'Product strategy'][i]}
                         </p>
                         <div className="mt-3 flex justify-between">
-                          <span className="text-[6px] text-gray-500">June {12 + n}</span>
+                          <span className="text-[6px] text-gray-600">June {12 + n}</span>
                           <span className="h-3 w-3 rounded-full bg-gray-300" />
                         </div>
                       </div>
@@ -103,7 +109,7 @@ export default function ProjectVisual({ kind, className = '' }) {
           <div className="mock-app frequency-app">
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
               <span className="text-sm font-semibold tracking-tight">
-                frequency<span className="text-accent">↗</span>
+                frequency<span className="text-accent-soft">↗</span>
               </span>
               <span className="text-[8px] text-gray-400">OVERVIEW / ANALYTICS</span>
             </div>
@@ -118,7 +124,7 @@ export default function ProjectVisual({ kind, className = '' }) {
                     {['TOTAL REVENUE', 'ACTIVE USERS', 'GROWTH RATE'][i]}
                   </p>
                   <p className="mt-2 text-xl tracking-tight">{value}</p>
-                  <p className="mt-1 text-[7px] text-red-400">↗ Up this month</p>
+                  <p className="mt-1 text-[7px] text-accent-soft">↗ Up this month</p>
                 </div>
               ))}
             </div>
@@ -129,11 +135,11 @@ export default function ProjectVisual({ kind, className = '' }) {
                   <div
                     key={i}
                     style={{ height: `${height}%` }}
-                    className="flex-1 bg-gradient-to-t from-red-950 to-red-500"
+                    className="flex-1 bg-gradient-to-t from-[#132a63] to-accent"
                   />
                 ))}
               </div>
-              <div className="mt-2 flex justify-between text-[6px] text-gray-500">
+              <div className="mt-2 flex justify-between text-[6px] text-gray-400">
                 <span>JUN 01</span>
                 <span>JUN 15</span>
                 <span>JUN 30</span>
@@ -145,7 +151,7 @@ export default function ProjectVisual({ kind, className = '' }) {
           <div className="mock-app nova-app">
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
               <span className="flex items-center gap-2 text-sm">
-                <Sparkles size={15} className="text-accent" />
+                <Sparkles size={15} className="text-accent-soft" />
                 nova
               </span>
               <span className="text-[8px] text-gray-400">YOUR EVERYDAY CO-PILOT</span>
@@ -171,15 +177,15 @@ export default function ProjectVisual({ kind, className = '' }) {
                 <ArrowUpRight size={12} />
               </span>
             </div>
-            <p className="mt-3 text-center text-[6px] text-gray-500">
+            <p className="mt-3 text-center text-[6px] text-gray-400">
               THOUGHTFUL INTELLIGENCE. HUMAN POSSIBILITIES.
             </p>
           </div>
         )}
-        {kind === 'orange' && (
-          <div className="mock-app orange-app">
+        {kind === 'indigo' && (
+          <div className="mock-app indigo-app">
             <div className="flex justify-between text-[9px] font-semibold">
-              <span>orange®</span>
+              <span>indigo®</span>
               <span>
                 Independent creative studio <Plus size={9} className="ml-4 inline" />
               </span>
@@ -187,7 +193,7 @@ export default function ProjectVisual({ kind, className = '' }) {
             <div className="mt-10 text-[62px] font-black leading-[.86] tracking-[-.08em]">
               GOOD
               <br />
-              <span className="text-[#ee382a]">DIFFERENT.</span>
+              <span className="text-accent">DIFFERENT.</span>
             </div>
             <div className="mt-6 flex items-end justify-between">
               <p className="max-w-36 text-[8px] leading-relaxed">
@@ -197,7 +203,7 @@ export default function ProjectVisual({ kind, className = '' }) {
                 <br />
                 We build brands that feel something.
               </p>
-              <span className="text-7xl leading-none text-[#ee382a]">✳</span>
+              <span className="text-7xl leading-none text-accent">✳</span>
             </div>
             <div className="mt-6 flex justify-between border-t border-black/20 pt-3 text-[7px]">
               <span>DESIGN WITH A POINT OF VIEW.</span>

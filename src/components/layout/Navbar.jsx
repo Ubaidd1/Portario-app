@@ -8,6 +8,7 @@ import useScroll from '../../hooks/useScroll'
 import useFocusTrap from '../../hooks/useFocusTrap'
 import Container from '../common/Container'
 import Button from '../common/Button'
+import { site } from '../../config/site'
 function MobileMenu({ close }) {
   const ref = useRef(null)
   useFocusTrap(ref, true, close)
@@ -25,7 +26,7 @@ function MobileMenu({ close }) {
     >
       <div className="flex items-center justify-between">
         <span className="logo">
-          FOLIOBLOX<span className="text-accent">®</span>
+          FOLIOBLOX<span className="text-accent-soft">®</span>
         </span>
         <button onClick={close} className="icon-button" aria-label="Close menu">
           <X />
@@ -45,7 +46,7 @@ function MobileMenu({ close }) {
               onClick={close}
               aria-label={item.label}
               className={({ isActive }) =>
-                `flex items-center justify-between border-b border-white/15 py-3 text-3xl font-medium sm:text-4xl ${isActive ? 'text-accent' : ''}`
+                `flex items-center justify-between border-b border-white/15 py-3 text-3xl font-medium sm:text-4xl ${isActive ? 'text-accent-soft' : ''}`
               }
             >
               <span>
@@ -59,7 +60,7 @@ function MobileMenu({ close }) {
           </motion.div>
         ))}
       </nav>
-      <p className="eyebrow text-muted">REMOTE · WORKING WORLDWIDE</p>
+      <p className="eyebrow text-muted">{site.location.toUpperCase()}</p>
     </motion.div>
   )
 }
@@ -121,14 +122,14 @@ function DesktopNavigation() {
               {expanded && (
                 <motion.div
                   id="services-menu"
-                  className="absolute inset-x-9 top-20 mx-auto max-w-5xl border border-white/15 bg-[#171717] p-8 shadow-2xl"
+                  className="absolute inset-x-9 top-20 mx-auto max-w-5xl border border-white/15 bg-surface p-8 shadow-2xl"
                   initial={{ opacity: 0, y: -8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -5 }}
                 >
                   <div className="grid grid-cols-[1fr_2fr] gap-12">
                     <div>
-                      <p className="eyebrow text-accent">PURPOSE BEFORE TECHNOLOGY</p>
+                      <p className="eyebrow text-accent-soft">PURPOSE BEFORE TECHNOLOGY</p>
                       <p className="mt-4 text-3xl leading-tight tracking-tight">
                         The right expertise.
                         <br />
@@ -148,7 +149,7 @@ function DesktopNavigation() {
                           key={service.slug}
                           to={`/services/${service.slug}`}
                           onClick={() => setExpanded(false)}
-                          className="group flex items-center gap-3 border-b border-white/10 py-4 text-sm hover:text-accent"
+                          className="group flex items-center gap-3 border-b border-white/10 py-4 text-sm hover:text-accent-soft"
                         >
                           <span className="font-mono text-[9px] text-muted">0{index + 1}</span>
                           {service.name}
@@ -185,7 +186,7 @@ export default function Navbar() {
       >
         <Container className="relative flex h-22 items-center justify-between gap-5">
           <Link to="/" aria-label="Folioblox home" className="logo">
-            FOLIOBLOX<span className="text-accent">®</span>
+            FOLIOBLOX<span className="text-accent-soft">®</span>
           </Link>
           <DesktopNavigation key={pathname} />
           <Button to="/contact" className="hidden lg:inline-flex">

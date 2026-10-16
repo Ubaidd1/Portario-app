@@ -50,7 +50,7 @@ export default function ServiceDetail() {
                   className="flex gap-5 border-b border-white/10 py-5 text-xl tracking-tight"
                   key={item}
                 >
-                  <span className="font-mono text-xs text-accent">0{index + 1}</span>
+                  <span className="font-mono text-xs text-accent-soft">0{index + 1}</span>
                   {item}
                 </div>
               ))}
@@ -82,7 +82,7 @@ export default function ServiceDetail() {
             <ul className="space-y-5">
               {service.deliverables.map((item) => (
                 <li key={item} className="flex gap-4 text-sm">
-                  <span className="text-accent">↗</span>
+                  <span className="text-accent-soft">↗</span>
                   {item}
                 </li>
               ))}

@@ -6,14 +6,14 @@ import Container from '../common/Container'
 import SectionTitle from '../common/SectionTitle'
 import TextLink from '../common/TextLink'
 import ServiceVisual from '../visuals/ServiceVisual'
-export default function Capabilities() {
+export default function Capabilities({ number = '01' }) {
   const [active, setActive] = useState(0)
   return (
     <section id="capabilities" className="section-space">
       <Container>
         <SectionTitle
-          number="01"
-          label="CAPABILITIES"
+          number={number}
+          label="TECHNICAL EXPERTISE"
           title="What I build."
           description="Different disciplines. One connected way of thinking."
         />
@@ -39,7 +39,7 @@ export default function Capabilities() {
                     <span className="flex-1 text-2xl tracking-tight md:text-3xl">{item.title}</span>
                     <Plus
                       size={18}
-                      className={active === index ? 'rotate-45 text-accent' : 'text-muted'}
+                      className={active === index ? 'rotate-45 text-accent-soft' : 'text-muted'}
                     />
                   </button>
                 </h3>

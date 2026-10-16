@@ -5,21 +5,40 @@ import { X, Maximize2 } from 'lucide-react'
 import useFocusTrap from '../../hooks/useFocusTrap'
 import SliderControls from '../common/SliderControls'
 import ProjectVisual from '../visuals/ProjectVisual'
-function GalleryFrame({ project, index }) {
+/** Real screenshots when the project has them, otherwise crops of the concept visual. */
+const galleryItems = (project) =>
+  project.images.length
+    ? project.images.map((image) => ({ ...image, label: image.caption || image.alt }))
+    : (project.gallery || []).map((label) => ({ label }))
+function GalleryFrame({ project, item, index }) {
   return (
-    <div className={`gallery-frame gallery-view-${index}`}>
-      <ProjectVisual kind={project.kind} className="!h-full !min-h-0" />
-      <span className="absolute bottom-4 left-4 rounded bg-black/80 px-3 py-2 font-mono text-[9px] text-white">
-        CONCEPT / {project.gallery[index]}
-      </span>
+    <div className={`gallery-frame ${item.src ? '' : `gallery-view-${index}`}`}>
+      {item.src ? (
+        <img
+          src={item.src}
+          alt={item.alt || item.label}
+          width={item.width || 1600}
+          height={item.height || 1000}
+          loading="lazy"
+          decoding="async"
+          className="h-full w-full object-cover"
+        />
+      ) : (
+        <ProjectVisual kind={project.kind} className="!h-full !min-h-0" />
+      )}
+      {!item.src && (
+        <span className="absolute bottom-4 left-4 rounded bg-background/85 px-3 py-2 font-mono text-[11px] text-white">
+          CONCEPT / {item.label}
+        </span>
+      )}
     </div>
   )
 }
-function Lightbox({ project, initialIndex, close }) {
+function Lightbox({ project, items, initialIndex, close }) {
   const [index, setIndex] = useState(initialIndex)
   const ref = useRef(null)
   useFocusTrap(ref, true, close)
-  const change = (value) => setIndex((value + project.gallery.length) % project.gallery.length)
+  const change = (value) => setIndex((value + items.length) % items.length)
   return (
     <motion.div
       ref={ref}
@@ -63,17 +82,17 @@ function Lightbox({ project, initialIndex, close }) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.97 }}
           >
-            <GalleryFrame project={project} index={index} />
+            <GalleryFrame project={project} item={items[index]} index={index} />
           </motion.div>
         </AnimatePresence>
       </div>
       <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-5">
         <p className="text-sm text-muted" aria-live="polite">
-          {project.gallery[index]}
+          {items[index].label}
         </p>
         <SliderControls
           index={index}
-          total={project.gallery.length}
+          total={items.length}
           onChange={change}
           label="gallery image"
         />
@@ -84,21 +103,23 @@ function Lightbox({ project, initialIndex, close }) {
 export default function ProjectGallery({ project }) {
   const [selected, setSelected] = useState(null)
   const close = useCallback(() => setSelected(null), [])
+  const items = galleryItems(project)
+  if (!items.length) return null
   return (
     <>
       <div className="gallery-strip mt-10">
-        {project.gallery.map((label, index) => (
+        {items.map((item, index) => (
           <button
-            key={label}
+            key={item.label}
             className="gallery-item group text-left"
             onClick={() => setSelected(index)}
-            aria-label={`Open ${label}`}
+            aria-label={`${item.label}, open in gallery`}
             data-cursor="image"
           >
-            <GalleryFrame project={project} index={index} />
+            <GalleryFrame project={project} item={item} index={index} />
             <span className="mt-4 flex items-center justify-between text-sm">
-              {label}
-              <Maximize2 size={17} className="text-accent" />
+              {item.label}
+              <Maximize2 size={17} className="text-accent-soft" aria-hidden="true" />
             </span>
           </button>
         ))}
@@ -106,7 +127,7 @@ export default function ProjectGallery({ project }) {
       {createPortal(
         <AnimatePresence>
           {selected !== null && (
-            <Lightbox project={project} initialIndex={selected} close={close} />
+            <Lightbox project={project} items={items} initialIndex={selected} close={close} />
           )}
         </AnimatePresence>,
         document.body,

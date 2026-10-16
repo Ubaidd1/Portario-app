@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { stack, stackGroups } from '../../data/technologies'
 import Container from '../common/Container'
 import SectionTitle from '../common/SectionTitle'
-export default function TechnologyStack() {
+export default function TechnologyStack({ number = '06' }) {
   const [active, setActive] = useState(null)
   const selected = stack.find((item) => item.name === active)
   return (
@@ -10,7 +10,7 @@ export default function TechnologyStack() {
       <Container>
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <SectionTitle
-            number="06"
+            number={number}
             label="TECHNOLOGY"
             title={
               <>
@@ -42,7 +42,7 @@ export default function TechnologyStack() {
                     y1={selected.y}
                     x2={item.x}
                     y2={item.y}
-                    stroke="#f04436"
+                    stroke="var(--color-accent)"
                     strokeWidth=".12"
                   />
                 ))}
@@ -70,7 +70,7 @@ export default function TechnologyStack() {
               ? `${selected.name} / ${stackGroups[selected.group]}`
               : 'HOVER, FOCUS, OR SELECT TO CONNECT THE DOTS'}
           </p>
-          <span className="eyebrow text-accent">PURPOSE → TOOL → POSSIBILITY</span>
+          <span className="eyebrow text-accent-soft">PURPOSE → TOOL → POSSIBILITY</span>
         </div>
       </Container>
     </section>

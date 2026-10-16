@@ -9,7 +9,7 @@ export default function TextLink({ to, children, className = '' }) {
       {children}
       <ArrowUpRight
         size={17}
-        className="text-accent transition-transform group-hover:-translate-y-1 group-hover:translate-x-1"
+        className="text-accent-soft transition-transform group-hover:-translate-y-1 group-hover:translate-x-1"
       />
     </Link>
   )

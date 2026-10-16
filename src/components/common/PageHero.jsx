@@ -6,7 +6,7 @@ export default function PageHero({ label, title, description, children }) {
     <section className="page-hero relative overflow-hidden border-b border-white/10">
       <div className="page-grid" aria-hidden="true" />
       <Container className="relative">
-        <p className="eyebrow mb-8 text-accent">{label}</p>
+        <p className="eyebrow mb-8 text-accent-soft">{label}</p>
         <RevealText as="h1" text={title} className="page-title max-w-6xl" />
         <FadeIn
           delay={0.1}

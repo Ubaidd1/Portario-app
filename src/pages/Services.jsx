@@ -23,7 +23,7 @@ export default function Services() {
         {services.map((service, index) => (
           <section key={service.slug} className="section-space border-b border-white/15">
             <div className="mb-8 flex items-center justify-between">
-              <p className="eyebrow text-accent">
+              <p className="eyebrow text-accent-soft">
                 0{index + 1} / {service.name}
               </p>
               <span className="font-display text-3xl text-white/20">{service.symbol}</span>

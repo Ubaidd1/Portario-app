@@ -16,8 +16,8 @@ export default function EditorialTimeline({ items }) {
         <FadeIn key={item.title} className="relative border-b border-white/15 py-9">
           <motion.span
             className="timeline-node"
-            initial={{ backgroundColor: '#171717' }}
-            whileInView={{ backgroundColor: '#f04436' }}
+            initial={{ backgroundColor: 'var(--color-surface)' }}
+            whileInView={{ backgroundColor: 'var(--color-accent)' }}
             viewport={{ amount: 1 }}
           />
           <div className="grid gap-6 md:grid-cols-[.7fr_1.5fr]">

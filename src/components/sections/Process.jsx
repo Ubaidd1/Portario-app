@@ -5,7 +5,7 @@ import { ArrowUpRight } from 'lucide-react'
 import { process } from '../../data/process'
 import Container from '../common/Container'
 import SectionTitle from '../common/SectionTitle'
-export default function Process() {
+export default function Process({ number = '05' }) {
   const ref = useRef(null)
   const [active, setActive] = useState(0)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 80%', 'end 30%'] })
@@ -17,7 +17,7 @@ export default function Process() {
       <Container>
         <div className="flex items-end justify-between gap-8">
           <SectionTitle
-            number="05"
+            number={number}
             label="THE PROCESS"
             title={
               <>
@@ -51,7 +51,7 @@ export default function Process() {
               <p className="mt-3 text-sm leading-7 text-muted">{step.description}</p>
               <ArrowUpRight
                 size={18}
-                className={`mt-5 ${active === index ? 'text-accent' : 'text-white/20'}`}
+                className={`mt-5 ${active === index ? 'text-accent-soft' : 'text-white/20'}`}
               />
             </button>
           ))}

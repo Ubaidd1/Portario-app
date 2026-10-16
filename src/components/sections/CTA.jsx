@@ -8,7 +8,7 @@ export default function CTA() {
       <div className="cta-orbit" aria-hidden="true" />
       <Container className="relative">
         <FadeIn>
-          <p className="eyebrow text-accent">HAVE SOMETHING IN MIND?</p>
+          <p className="eyebrow text-accent-soft">HAVE SOMETHING IN MIND?</p>
           <p className="mt-6 text-lg text-muted">A good idea deserves a great start.</p>
           <h2 className="mt-8 max-w-5xl text-[clamp(2.7rem,7.5vw,7rem)] font-semibold leading-[1.03] tracking-[-.065em]">
             LET’S MAKE YOUR

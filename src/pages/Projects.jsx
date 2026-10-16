@@ -7,20 +7,24 @@ import PageHero from '../components/common/PageHero'
 import Container from '../components/common/Container'
 import ProjectCard from '../components/project/ProjectCard'
 import CTA from '../components/sections/CTA'
+// Only offer filters that match at least one published project.
+const filters = projectFilters.filter(
+  (category) => category === 'All' || projects.some((project) => project.filter === category),
+)
 export default function Projects() {
   const [params, setParams] = useSearchParams()
-  const filter = projectFilters.includes(params.get('category')) ? params.get('category') : 'All'
+  const filter = filters.includes(params.get('category')) ? params.get('category') : 'All'
   const visible = projects.filter((project) => filter === 'All' || project.filter === filter)
   return (
     <>
       <SEO
         title="Projects"
-        description="Explore original workspace, analytics, AI, and studio interface studies with technical context and proposed architecture."
+        description="Selected web, data, AI, and interface projects, each with the problem, the approach, the architecture, and the decisions behind it."
       />
       <PageHero
-        label="SELECTED WORK / 04"
+        label="SELECTED WORK"
         title="PROJECTS THAT SOLVE REAL PROBLEMS."
-        description="Original interface and technical explorations. These are concept studies, with proposed approaches clearly separated from measured results."
+        description="Each project walks through the problem, the approach, and the technical decisions behind it. Concept studies are labelled as such, and only verified results are reported."
       />
       <Container className="py-14">
         <div
@@ -28,7 +32,7 @@ export default function Projects() {
           role="group"
           aria-label="Filter projects"
         >
-          {projectFilters.map((category) => (
+          {filters.map((category) => (
             <button
               key={category}
               onClick={() =>
@@ -42,7 +46,7 @@ export default function Projects() {
           ))}
         </div>
         <p className="eyebrow mt-5 text-muted" role="status">
-          {visible.length} {visible.length === 1 ? 'STUDY' : 'STUDIES'} / {filter.toUpperCase()}
+          {visible.length} {visible.length === 1 ? 'PROJECT' : 'PROJECTS'} / {filter.toUpperCase()}
         </p>
         <motion.div layout className="mt-10 grid items-start gap-x-12 gap-y-16 md:grid-cols-2">
           <AnimatePresence mode="popLayout">
@@ -58,8 +62,7 @@ export default function Projects() {
             </span>
             <h2 className="mt-6 text-3xl tracking-tight">Room for what comes next.</h2>
             <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-muted">
-              No {filter.toLowerCase()} case studies are published yet. Explore the current
-              collection while new work takes shape.
+              Nothing in this category yet. Explore the full collection instead.
             </p>
             <button className="button button-outline mt-7" onClick={() => setParams({})}>
               View all projects

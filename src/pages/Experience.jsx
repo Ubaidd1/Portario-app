@@ -1,52 +1,67 @@
-import { experience } from '../data/experience'
+import { engagements, experience } from '../data/experience'
+import { capabilities } from '../data/technologies'
 import SEO from '../components/common/SEO'
 import PageHero from '../components/common/PageHero'
 import Container from '../components/common/Container'
+import SectionTitle from '../components/common/SectionTitle'
 import TextLink from '../components/common/TextLink'
 import FadeIn from '../components/animations/FadeIn'
-import Stats from '../components/sections/Stats'
+import ExperienceSection from '../components/sections/ExperienceSection'
 import CTA from '../components/sections/CTA'
 export default function Experience() {
   return (
     <>
       <SEO
         title="Experience"
-        description="A transparent view of the practice, technical projects, and ongoing learning behind Folioblox."
+        description="Experience, areas of practice, and the ways clients can work with Folioblox on websites, applications, AI, and data projects."
       />
       <PageHero
         label="EXPERIENCE / THE PRACTICE"
         title="BUILT THROUGH DOING."
-        description="A place for the work, the context, and the lessons along the way. Employment and client history will be added only when verified details are available."
+        description="The areas I work across, the ways we can work together, and the projects that show the thinking behind them."
       />
-      <Container className="py-16">
-        {experience.map((item, index) => (
-          <FadeIn
-            key={item.title}
-            className="grid gap-6 border-t border-white/15 py-10 md:grid-cols-[80px_1fr_1fr]"
-          >
-            <span className="font-mono text-sm text-accent">0{index + 1}</span>
-            <div>
-              <h2 className="text-3xl tracking-tight">{item.title}</h2>
-              <p className="eyebrow mt-4 text-muted">{item.status}</p>
-            </div>
-            <div>
-              <p className="text-sm leading-7 text-muted">{item.description}</p>
-              {item.entries.map((entry) => (
-                <div className="mt-5" key={entry.title}>
-                  <h3>{entry.title}</h3>
-                  <p className="text-sm text-muted">{entry.description}</p>
-                </div>
-              ))}
-              {item.to && (
-                <TextLink to={item.to} className="mt-5">
-                  Explore the work
+      <ExperienceSection number="01" showLink={false} />
+      <section className="section-space">
+        <Container>
+          <SectionTitle
+            number={experience.length ? '02' : '01'}
+            label="AREAS OF PRACTICE"
+            title="Different disciplines. One way of thinking."
+          />
+          <div className="mt-12 grid gap-x-12 md:grid-cols-2">
+            {capabilities.map((item, index) => (
+              <FadeIn key={item.title} className="border-t border-white/15 py-8">
+                <span className="font-mono text-sm text-accent-soft">0{index + 1}</span>
+                <h2 className="mt-4 text-2xl tracking-tight">{item.title}</h2>
+                <p className="mt-3 max-w-lg text-sm leading-7 text-muted">{item.description}</p>
+                <TextLink to={item.to} className="mt-4">
+                  Explore <span className="sr-only">{item.title}</span>
                 </TextLink>
-              )}
-            </div>
-          </FadeIn>
-        ))}
-      </Container>
-      <Stats />
+              </FadeIn>
+            ))}
+          </div>
+        </Container>
+      </section>
+      <section className="section-space bg-surface">
+        <Container>
+          <SectionTitle
+            number={experience.length ? '03' : '02'}
+            label="WORKING TOGETHER"
+            title="Ways we can work together."
+          />
+          <div className="mt-12 grid gap-8 md:grid-cols-3">
+            {engagements.map((item) => (
+              <FadeIn key={item.title} className="border-t border-accent/60 pt-6">
+                <h2 className="text-xl tracking-tight">{item.title}</h2>
+                <p className="mt-3 text-sm leading-7 text-muted">{item.description}</p>
+              </FadeIn>
+            ))}
+          </div>
+          <TextLink to="/projects" className="mt-12">
+            See selected projects
+          </TextLink>
+        </Container>
+      </section>
       <CTA />
     </>
   )

@@ -4,15 +4,16 @@ import { awards } from '../../data/awards'
 import Container from '../common/Container'
 import SectionTitle from '../common/SectionTitle'
 import SliderControls from '../common/SliderControls'
-export default function Awards() {
+export default function Awards({ number = '09' }) {
   const [index, setIndex] = useState(0)
   const award = awards[index]
+  if (!award) return null
   return (
     <section className="section-space">
       <Container>
         <div className="grid gap-12 lg:grid-cols-2">
           <SectionTitle
-            number="09"
+            number={number}
             label="RECOGNITION"
             title={
               <>
@@ -21,13 +22,7 @@ export default function Awards() {
                 Shared success.
               </>
             }
-            description="A recognition showcase using the supplied sample records. These entries are not verified awards."
           />
-          <div className="flex flex-col justify-end">
-            <p className="eyebrow text-muted lg:text-right">
-              SAMPLE RECOGNITION · NOT VERIFIED AWARDS
-            </p>
-          </div>
         </div>
         <div
           className="mt-12 border-y border-white/15"
@@ -64,7 +59,7 @@ export default function Awards() {
                 <h3 className="text-3xl font-medium tracking-tight md:text-4xl">{award.name}</h3>
                 <p className="mt-3 text-sm text-muted">{award.distinction}</p>
               </div>
-              <span className="font-mono text-sm text-accent">↗ {award.year}</span>
+              <span className="font-mono text-sm text-accent-soft">↗ {award.year}</span>
             </motion.div>
           </AnimatePresence>
         </div>

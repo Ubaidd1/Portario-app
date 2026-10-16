@@ -4,7 +4,7 @@ import { Plus } from 'lucide-react'
 import { faqs } from '../../data/faq'
 import Container from '../common/Container'
 import SectionTitle from '../common/SectionTitle'
-export default function FAQ() {
+export default function FAQ({ number = '10' }) {
   const [active, setActive] = useState(0)
   return (
     <section className="section-space border-t border-white/10">
@@ -13,12 +13,11 @@ export default function FAQ() {
           <div>
             <span
               aria-hidden="true"
-              className="mb-5 block font-display text-[clamp(5rem,10vw,10rem)] leading-none tracking-[-.09em] text-white/10"
-            >
-              FAQ
-            </span>
+              data-text="FAQ"
+              className="decorative-text mb-5 block font-display text-[clamp(5rem,10vw,10rem)] leading-none tracking-[-.09em] text-white/10"
+            />
             <SectionTitle
-              number="10"
+              number={number}
               label="FAQ"
               title={
                 <>
@@ -50,7 +49,7 @@ export default function FAQ() {
                     </span>
                     <Plus
                       size={19}
-                      className={`shrink-0 transition-transform ${active === index ? 'rotate-45 text-accent' : ''}`}
+                      className={`shrink-0 transition-transform ${active === index ? 'rotate-45 text-accent-soft' : ''}`}
                     />
                   </button>
                 </h3>

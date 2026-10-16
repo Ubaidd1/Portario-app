@@ -19,7 +19,7 @@ export const serviceDetails = {
       'Deployment and handover guide',
     ],
     stages: ['Map the user journeys', 'Build and integrate', 'Verify and release'],
-    related: ['forma', 'orange'],
+    related: ['forma', 'indigo'],
   },
   'App Development': {
     slug: 'app-development',
@@ -67,7 +67,7 @@ export const serviceDetails = {
       'Measurement checklist',
     ],
     stages: ['Understand search intent', 'Audit and prioritize', 'Implement and observe'],
-    related: ['orange'],
+    related: ['indigo'],
   },
   'Social Media Marketing': {
     slug: 'social-media',
@@ -89,7 +89,7 @@ export const serviceDetails = {
       'Campaign review template',
     ],
     stages: ['Define the audience', 'Shape the content system', 'Publish, learn, refine'],
-    related: ['orange'],
+    related: ['indigo'],
   },
   'AI / ML': {
     slug: 'ai-ml',
@@ -155,7 +155,7 @@ export const serviceDetails = {
       'Developer handover',
     ],
     stages: ['Understand the task', 'Explore and prototype', 'Refine and document'],
-    related: ['orange', 'forma'],
+    related: ['indigo', 'forma'],
   },
   'CMS Development': {
     slug: 'cms',
@@ -177,6 +177,6 @@ export const serviceDetails = {
       'Publishing and maintenance notes',
     ],
     stages: ['Map the content', 'Build the editing experience', 'Train and hand over'],
-    related: ['orange', 'forma'],
+    related: ['indigo', 'forma'],
   },
 }

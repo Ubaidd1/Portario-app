@@ -3,7 +3,7 @@ export default function SectionTitle({ number, label, title, description, classN
   return (
     <FadeIn className={className}>
       <p className="eyebrow mb-6">
-        <span className="text-accent">{number}</span>
+        <span className="text-accent-soft">{number}</span>
         <span className="mx-3 text-muted">/</span>
         {label}
       </p>

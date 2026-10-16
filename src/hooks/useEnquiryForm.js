@@ -1,108 +1,67 @@
 import { useEffect, useRef, useState } from 'react'
-import { submitEnquiry, validateEnquiry } from '../utils/contact'
-export default function useEnquiryForm(initialService = '') {
+import { normaliseContact, validateContact } from '../utils/contactValidation'
+import { contactMode, enquiryMailto, sendEnquiry } from '../utils/contact'
+const TIMEOUT_MS = 15000
+/** State for the contact form: idle → submitting → sent | opened-email, or an error. */
+export default function useEnquiryForm(initialSubject = '') {
   const [values, setValues] = useState({
-    goal: '',
-    service: initialService,
-    description: '',
-    firstName: '',
-    lastName: '',
+    name: '',
     email: '',
-    consent: false,
+    subject: initialSubject,
+    message: '',
+    website: '',
   })
-  const [step, setStep] = useState(0)
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('idle')
   const [message, setMessage] = useState('')
   const controller = useRef(null)
-  const busy = useRef(false)
   const formRef = useRef(null)
   useEffect(() => () => controller.current?.abort(), [])
   const update = (event) => {
-    const { name, type, value, checked } = event.target
-    setValues((previous) => ({ ...previous, [name]: type === 'checkbox' ? checked : value }))
+    const { name, value } = event.target
+    setValues((previous) => ({ ...previous, [name]: value }))
     setErrors((previous) => ({ ...previous, [name]: undefined }))
+    if (status === 'error') setStatus('idle')
     setMessage('')
   }
-  const fields = [
-    ['goal'],
-    ['service'],
-    ['description'],
-    ['firstName', 'lastName', 'email'],
-    ['consent'],
-  ]
-  const validate = () => {
-    const all = validateEnquiry(values)
-    if (!values.goal) all.goal = 'Choose a starting point for the conversation.'
-    const next = Object.fromEntries(
-      Object.entries(all).filter(([name]) => fields[step].includes(name)),
-    )
+  const showErrors = (next) => {
     setErrors(next)
-    if (Object.keys(next).length) {
-      const name = Object.keys(next)[0]
-      requestAnimationFrame(() => formRef.current?.querySelector(`[name="${name}"]`)?.focus())
-      return false
-    }
-    return true
-  }
-  const back = () => {
-    setStep((previous) => Math.max(0, previous - 1))
-    setErrors({})
-    setMessage('')
-  }
-  const goTo = (value) => {
-    if (!busy.current && value < step) {
-      setStep(value)
-      setErrors({})
-      setMessage('')
-    }
+    const first = Object.keys(next)[0]
+    requestAnimationFrame(() => formRef.current?.querySelector(`[name="${first}"]`)?.focus())
   }
   const submit = async (event) => {
     event.preventDefault()
-    if (busy.current || !validate()) return
-    if (step < 4) {
-      setStep((previous) => previous + 1)
+    if (status === 'submitting') return
+    const details = normaliseContact(values)
+    const invalid = validateContact(details)
+    if (Object.keys(invalid).length) return showErrors(invalid)
+    if (contactMode === 'email') {
+      window.location.href = enquiryMailto(details)
+      setStatus('opened-email')
       return
     }
-    const allErrors = validateEnquiry(values)
-    if (Object.keys(allErrors).length) {
-      const target = fields.findIndex((names) => names.some((name) => allErrors[name]))
-      setStep(Math.max(0, target))
-      setErrors(allErrors)
-      return
-    }
-    busy.current = true
-    setStatus('loading')
+    setStatus('submitting')
     setMessage('')
     controller.current = new AbortController()
-    const timer = setTimeout(() => controller.current?.abort(), 15000)
+    const timer = setTimeout(() => controller.current?.abort(), TIMEOUT_MS)
     try {
-      const result = await submitEnquiry(
-        Object.fromEntries(
-          Object.entries(values).map(([key, value]) => [
-            key,
-            typeof value === 'string' ? value.trim() : value,
-          ]),
-        ),
-        controller.current.signal,
-      )
-      setStatus(result.status)
-      setStep(5)
+      await sendEnquiry(details, controller.current.signal)
+      setStatus('sent')
     } catch (error) {
       setStatus('error')
+      if (error.fieldErrors && Object.keys(error.fieldErrors).length) showErrors(error.fieldErrors)
       setMessage(
         error.name === 'AbortError'
-          ? 'The request was interrupted or timed out. Your details are still here; please try again.'
+          ? 'The request timed out. Your message is still here, so please try again.'
           : error.message,
       )
     } finally {
       clearTimeout(timer)
-      busy.current = false
     }
   }
-  const edit = () => {
-    setStep(4)
+  const reset = () => {
+    setValues({ name: '', email: '', subject: '', message: '', website: '' })
     setStatus('idle')
   }
-  return { values, step, errors, status, message, formRef, update, back, goTo, submit, edit }
+  return { values, errors, status, message, formRef, update, submit, reset }
 }

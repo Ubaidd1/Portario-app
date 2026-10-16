@@ -1,36 +1,40 @@
-/** Connect VITE_CONTACT_ENDPOINT to your own HTTPS enquiry API. */
-export async function submitEnquiry(details, signal) {
-  const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT
-  if (!endpoint) return { status: 'draft', details }
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(details),
-    signal,
-  })
-  if (!response.ok) throw new Error('Your enquiry could not be sent. Please try again in a moment.')
-  return { status: 'sent' }
+import { site } from '../config/site'
+
+export class ContactError extends Error {
+  constructor(message, fieldErrors = {}) {
+    super(message)
+    this.fieldErrors = fieldErrors
+  }
 }
-export function validateEnquiry(values) {
-  const errors = {}
-  if (!values.firstName.trim()) errors.firstName = 'Please enter your first name.'
-  if (!values.lastName.trim()) errors.lastName = 'Please enter your last name.'
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim()))
-    errors.email = 'Please enter a valid email address.'
-  if (!values.service) errors.service = 'Choose a service to get started.'
-  if (values.description.trim().length < 20)
-    errors.description = 'Please share at least 20 characters about your project.'
-  if (!values.consent) errors.consent = 'Please agree to share your details for this enquiry.'
-  return errors
+
+/** How enquiries are delivered: a configured endpoint, the visitor's email app, or neither. */
+export const contactMode = site.contactEndpoint ? 'endpoint' : site.email ? 'email' : 'unavailable'
+
+/** POST the enquiry to VITE_CONTACT_ENDPOINT. Resolves only when the server accepted it. */
+export async function sendEnquiry(details, signal) {
+  let response
+  try {
+    response = await fetch(site.contactEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(details),
+      signal,
+    })
+  } catch (error) {
+    if (error.name === 'AbortError') throw error
+    throw new ContactError('We couldn’t reach the server. Check your connection and try again.')
+  }
+  if (response.ok) return
+  const body = await response.json().catch(() => ({}))
+  if (response.status === 422 && body.errors)
+    throw new ContactError('Please check the highlighted fields.', body.errors)
+  if (response.status === 429)
+    throw new ContactError('Too many messages in a short time. Please try again in a few minutes.')
+  throw new ContactError('Your message couldn’t be sent right now. Please try again shortly.')
 }
-export function downloadEnquiry(details) {
-  const content = `PROJECT ENQUIRY — NOT SENT\n\nGoal: ${details.goal || 'Project enquiry'}\nName: ${details.firstName} ${details.lastName}\nEmail: ${details.email}\nService: ${details.service}\n\n${details.description}\n\nConsent to share these details: Yes\n`
-  const url = URL.createObjectURL(new Blob([content], { type: 'text/plain' }))
-  const link = document.createElement('a')
-  link.href = url
-  link.download = 'folioblox-project-enquiry.txt'
-  document.body.appendChild(link)
-  link.click()
-  link.remove()
-  setTimeout(() => URL.revokeObjectURL(url), 1000)
+
+/** A mailto: link carrying the enquiry, for when no endpoint is configured. */
+export function enquiryMailto({ name, email, subject, message }) {
+  const body = `${message}\n\n— ${name}\n${email}`
+  return `mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 }

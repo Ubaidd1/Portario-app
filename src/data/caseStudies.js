@@ -1,7 +1,22 @@
+/**
+ * Long-form case-study content, keyed by each project's `kind` (see projects.js).
+ * Only add `results` that are verified and that you have permission to publish,
+ * e.g. results: [{ value: '38%', label: 'faster page loads (Lighthouse, before/after)' }].
+ */
 export const caseStudies = {
   forma: {
     filter: 'Web',
     role: 'Interface & application concept',
+    contributions: [
+      'Information architecture for the workspace overview',
+      'Interface design and reusable dashboard components',
+      'Proposed separation between interface, API and storage layers',
+    ],
+    decisions: [
+      'Group work by status first, so priorities are visible without opening a project.',
+      'Keep data access behind an API boundary so presentation components stay simple to test.',
+      'Build the dashboard from a small set of reusable cards instead of one-off panels.',
+    ],
     problem:
       'Project information is often spread across multiple views, making it harder to see priorities at a glance.',
     objective:
@@ -34,6 +49,16 @@ export const caseStudies = {
   frequency: {
     filter: 'Data',
     role: 'Data visualization concept',
+    contributions: [
+      'Dashboard information hierarchy and chart treatment',
+      'Proposed Python pipeline for validating and transforming inputs',
+      'Interface for comparing time periods and groups',
+    ],
+    decisions: [
+      'Lead with a few summary indicators and reveal detail on demand.',
+      'Use one consistent chart style so differences in data, not decoration, stand out.',
+      'Keep calculations documented in the pipeline so every number on screen can be traced.',
+    ],
     problem: 'A large collection of metrics does not automatically tell a useful story.',
     objective:
       'Explore a dashboard that connects high-level signals with readable supporting detail.',
@@ -72,6 +97,16 @@ export const caseStudies = {
   nova: {
     filter: 'AI / ML',
     role: 'AI product & interaction concept',
+    contributions: [
+      'Conversation layout and suggested-prompt patterns',
+      'Interface states that communicate what the assistant can and cannot do',
+      'Proposed request, retrieval and evaluation architecture',
+    ],
+    decisions: [
+      'Offer starting prompts so people are never facing an empty box.',
+      'Show the assistant’s limits in the interface rather than hiding them in documentation.',
+      'Ground responses in approved sources and evaluate against known examples before release.',
+    ],
     problem:
       'Open-ended AI tools can leave people unsure what to ask, what to trust, or what to do next.',
     objective:
@@ -108,15 +143,25 @@ export const caseStudies = {
     ],
     gallery: ['Conversation canvas', 'Prompt exploration', 'Interaction detail'],
   },
-  orange: {
+  indigo: {
     filter: 'UI/UX',
     role: 'Art direction & interface concept',
+    contributions: [
+      'Art direction and typographic system',
+      'Responsive editorial layouts',
+      'Component structure for project storytelling',
+    ],
+    decisions: [
+      'Let oversized type carry the identity, and keep navigation conventional.',
+      'Define the type scale with fluid sizing so compositions hold on small screens.',
+      'Ship as a static build for fast delivery and simple hosting.',
+    ],
     problem:
       'A creative studio needs a distinctive voice without making its work difficult to explore.',
     objective:
       'Explore a digital identity that combines editorial expression with usable navigation.',
     design:
-      'Oversized type, a disciplined grid, and controlled red accents create a confident visual rhythm.',
+      'Oversized type, a disciplined grid, and controlled blue accents create a confident visual rhythm.',
     features: [
       'Editorial project storytelling',
       'Responsive typographic scale',

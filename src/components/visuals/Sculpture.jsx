@@ -1,13 +1,16 @@
 import { useEffect, useRef } from 'react'
 import { useInView, useReducedMotion } from 'framer-motion'
 
-const PALETTE = ['#f04436', '#ff6a4f', '#eae7e0', '#8b8b86']
+const PALETTE_TOKENS = ['--color-accent', '--color-accent-soft', '--color-text', '--color-muted']
 const RIBBON_COUNT = 5
 const SEGMENTS = 64
 
 function makeRibbons() {
+  // Canvas cannot read CSS variables directly, so resolve the theme tokens once.
+  const styles = getComputedStyle(document.documentElement)
+  const palette = PALETTE_TOKENS.map((token) => styles.getPropertyValue(token).trim() || '#2563eb')
   return Array.from({ length: RIBBON_COUNT }, (_, i) => ({
-    color: PALETTE[i % PALETTE.length],
+    color: palette[i % palette.length],
     phase: (Math.PI * 2 * i) / RIBBON_COUNT,
     tilt: (i / RIBBON_COUNT) * Math.PI * 0.6,
     twist: 1.6 + i * 0.35,
@@ -45,10 +48,10 @@ export default function Sculpture({ compact = false }) {
       const rect = wrap.getBoundingClientRect()
       width = rect.width
       height = rect.height
+      // CSS keeps the element at 100% of its stage; only the drawing buffer is sized here,
+      // so a stale pixel size can never push the layout wider during a resize.
       canvas.width = width * dpr
       canvas.height = height * dpr
-      canvas.style.width = `${width}px`
-      canvas.style.height = `${height}px`
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
     }
 
@@ -134,12 +137,17 @@ export default function Sculpture({ compact = false }) {
       pointerYaw += (targetYaw - pointerYaw) * 0.04
       pointerPitch += (targetPitch - pointerPitch) * 0.04
 
-      rotationVel += ((pointer.current.inside ? 0.0026 + targetYaw * 0.004 : 0.0026) - rotationVel) * 0.02
+      rotationVel +=
+        ((pointer.current.inside ? 0.0026 + targetYaw * 0.004 : 0.0026) - rotationVel) * 0.02
       rotation += rotationVel
       tilt = Math.sin(time * 0.18) * 0.18
 
-      const ordered = [...ribbons].sort((a, b) => Math.sin(a.phase + rotation) - Math.sin(b.phase + rotation))
-      ordered.forEach((ribbon) => drawRibbon(ribbon, time, cx, cy, radius, focal, pointerYaw, pointerPitch))
+      const ordered = [...ribbons].sort(
+        (a, b) => Math.sin(a.phase + rotation) - Math.sin(b.phase + rotation),
+      )
+      ordered.forEach((ribbon) =>
+        drawRibbon(ribbon, time, cx, cy, radius, focal, pointerYaw, pointerPitch),
+      )
     }
 
     const step = () => {
