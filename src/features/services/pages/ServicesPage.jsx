@@ -1,13 +1,14 @@
+import SEO from '@/shared/components/SEO'
+import PageHero from '@/shared/components/PageHero'
+import Container from '@/shared/components/Container'
+import Button from '@/shared/components/Button'
+import TextLink from '@/shared/components/TextLink'
+import ImageReveal from '@/shared/animations/ImageReveal'
+import CTA from '@/shared/components/CTA'
+import TagList from '@/shared/components/TagList'
 import { services } from '../data/services'
-import SEO from '../components/common/SEO'
-import PageHero from '../components/common/PageHero'
-import Container from '../components/common/Container'
-import Button from '../components/common/Button'
-import TextLink from '../components/common/TextLink'
-import ImageReveal from '../components/animations/ImageReveal'
-import ServiceVisual from '../components/visuals/ServiceVisual'
-import CTA from '../components/sections/CTA'
-export default function Services() {
+import ServiceVisual from '../components/ServiceVisual'
+export default function ServicesPage() {
   return (
     <>
       <SEO
@@ -32,13 +33,7 @@ export default function Services() {
               <div>
                 <h2 className="section-title">{service.title}</h2>
                 <p className="mt-5 max-w-xl text-sm leading-7 text-muted">{service.description}</p>
-                <div className="mt-7 flex flex-wrap gap-2">
-                  {service.tags.map((tag) => (
-                    <span className="tag" key={tag}>
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                <TagList items={service.tags} className="mt-7" />
                 <div className="mt-8 grid gap-6 sm:grid-cols-2">
                   <div>
                     <h3 className="eyebrow text-muted">CAPABILITIES</h3>

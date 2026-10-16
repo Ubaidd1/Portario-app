@@ -1,6 +1,6 @@
-import { projects } from '../../data/projects'
-import Container from '../common/Container'
-import SectionTitle from '../common/SectionTitle'
+import Container from '@/shared/components/Container'
+import SectionTitle from '@/shared/components/SectionTitle'
+import { projects } from '../data/projects'
 import ProjectCard from './ProjectCard'
 export default function RelatedProjects({ slugs }) {
   const selected = projects.filter((project) => slugs.includes(project.slug)).slice(0, 2)

@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { stack, stackGroups } from '../../data/technologies'
-import Container from '../common/Container'
-import SectionTitle from '../common/SectionTitle'
+import Container from '@/shared/components/Container'
+import SectionTitle from '@/shared/components/SectionTitle'
+import { stack, stackGroups } from '../data/technologies'
 export default function TechnologyStack({ number = '06' }) {
   const [active, setActive] = useState(null)
   const selected = stack.find((item) => item.name === active)

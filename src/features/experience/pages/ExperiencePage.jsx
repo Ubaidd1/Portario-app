@@ -1,14 +1,14 @@
+import { capabilities } from '@/features/services/data/capabilities'
+import SEO from '@/shared/components/SEO'
+import PageHero from '@/shared/components/PageHero'
+import Container from '@/shared/components/Container'
+import SectionTitle from '@/shared/components/SectionTitle'
+import TextLink from '@/shared/components/TextLink'
+import FadeIn from '@/shared/animations/FadeIn'
+import CTA from '@/shared/components/CTA'
 import { engagements, experience } from '../data/experience'
-import { capabilities } from '../data/technologies'
-import SEO from '../components/common/SEO'
-import PageHero from '../components/common/PageHero'
-import Container from '../components/common/Container'
-import SectionTitle from '../components/common/SectionTitle'
-import TextLink from '../components/common/TextLink'
-import FadeIn from '../components/animations/FadeIn'
-import ExperienceSection from '../components/sections/ExperienceSection'
-import CTA from '../components/sections/CTA'
-export default function Experience() {
+import ExperienceSection from '../components/ExperienceSection'
+export default function ExperiencePage() {
   return (
     <>
       <SEO

@@ -1,18 +1,19 @@
-import { lazy, Suspense } from 'react'
+import { Suspense } from 'react'
 import { BrowserRouter, Routes, Route, useLocation, useNavigationType } from 'react-router-dom'
 import { AnimatePresence, MotionConfig } from 'framer-motion'
-import Layout from './components/layout/Layout'
-import PageTransition from './components/animations/PageTransition'
-import Home from './pages/Home'
-const About = lazy(() => import('./pages/About'))
-const Services = lazy(() => import('./pages/Services'))
-const ServiceDetail = lazy(() => import('./pages/ServiceDetail'))
-const Projects = lazy(() => import('./pages/Projects'))
-const ProjectDetail = lazy(() => import('./pages/ProjectDetail'))
-const Process = lazy(() => import('./pages/Process'))
-const Experience = lazy(() => import('./pages/Experience'))
-const Contact = lazy(() => import('./pages/Contact'))
-const NotFound = lazy(() => import('./pages/NotFound'))
+import Layout from '@/layout/Layout'
+import PageTransition from '@/shared/animations/PageTransition'
+import { routes } from './routes'
+function RouteFallback() {
+  return (
+    // Fills the viewport so the footer doesn't jump when the page chunk arrives.
+    <div className="flex min-h-svh items-center justify-center" role="status">
+      <p className="eyebrow text-muted">
+        PREPARING THE NEXT CHAPTER<span className="ml-3 text-accent-soft">…</span>
+      </p>
+    </div>
+  )
+}
 function ApplicationRoutes() {
   const location = useLocation()
   const navigationType = useNavigationType()
@@ -25,26 +26,11 @@ function ApplicationRoutes() {
           hash={location.hash}
           navigationType={navigationType}
         >
-          <Suspense
-            fallback={
-              <div className="flex min-h-svh items-center justify-center" role="status">
-                <p className="eyebrow text-muted">
-                  PREPARING THE NEXT CHAPTER<span className="ml-3 text-accent-soft">…</span>
-                </p>
-              </div>
-            }
-          >
+          <Suspense fallback={<RouteFallback />}>
             <Routes location={location}>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/services/:slug" element={<ServiceDetail />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/projects/:slug" element={<ProjectDetail />} />
-              <Route path="/process" element={<Process />} />
-              <Route path="/experience" element={<Experience />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="*" element={<NotFound />} />
+              {routes.map(({ path, Component }) => (
+                <Route key={path} path={path} element={<Component />} />
+              ))}
             </Routes>
           </Suspense>
         </PageTransition>

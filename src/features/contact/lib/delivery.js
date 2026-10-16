@@ -1,4 +1,4 @@
-import { site } from '../config/site'
+import { site } from '@/config/site'
 
 export class ContactError extends Error {
   constructor(message, fieldErrors = {}) {

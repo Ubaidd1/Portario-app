@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 import { ArrowUp, ArrowUpRight } from 'lucide-react'
-import { services } from '../../data/services'
-import { navigation } from '../../data/navigation'
-import Container from '../common/Container'
-import { resumeUrl, site, socialLinks } from '../../config/site'
+import { services } from '@/features/services/data/services'
+import Container from '@/shared/components/Container'
+import { resumeUrl, site, socialLinks } from '@/config/site'
+import { navigation } from './navigation'
 export default function Footer() {
   return (
     <footer className="pt-16">

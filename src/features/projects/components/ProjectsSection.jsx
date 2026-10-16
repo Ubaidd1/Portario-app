@@ -1,86 +1,30 @@
-import { Link } from 'react-router-dom'
 import { createPortal } from 'react-dom'
 import { useCallback, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowUpRight, X } from 'lucide-react'
-import useFocusTrap from '../../hooks/useFocusTrap'
-import Container from '../common/Container'
-import SectionTitle from '../common/SectionTitle'
-import SliderControls from '../common/SliderControls'
-import ProjectMedia from '../project/ProjectMedia'
-import ProjectLinks from '../project/ProjectLinks'
-import { projects, statusLabels } from '../../data/projects'
-import Button from '../common/Button'
-function ProjectDialog({ project, close }) {
-  const ref = useRef(null)
-  useFocusTrap(ref, true, close)
-  return (
-    <motion.div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/85 p-4 backdrop-blur-md"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      onClick={(event) => {
-        if (event.target === event.currentTarget) close()
-      }}
-    >
-      <div
-        ref={ref}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="project-dialog-title"
-        className="relative max-h-[90dvh] w-full max-w-3xl overflow-y-auto border border-white/15 bg-surface p-6 sm:p-10"
-      >
-        <div className="mb-7 flex justify-between">
-          <span className="eyebrow text-accent-soft">
-            {statusLabels[project.status]?.toUpperCase()} / {project.year}
-          </span>
-          <button aria-label="Close project" className="icon-button" onClick={close}>
-            <X size={20} />
-          </button>
-        </div>
-        <h2 id="project-dialog-title" className="section-title">
-          {project.title}
-        </h2>
-        <p className="mt-4 text-muted">{project.description}</p>
-        <ProjectMedia project={project} className="my-7 !min-h-0 !h-[300px]" />
-        <h3 className="text-xl font-medium">The idea</h3>
-        <p className="mt-3 text-sm leading-7 text-muted">{project.summary}</p>
-        <h3 className="mt-6 text-xl font-medium">The approach</h3>
-        <p className="mt-3 text-sm leading-7 text-muted">{project.approach}</p>
-        <div className="my-6 flex flex-wrap gap-2">
-          {project.technologies.map((tech) => (
-            <span className="tag" key={tech}>
-              {tech}
-            </span>
-          ))}
-        </div>
-        {project.status === 'concept' && (
-          <p className="mb-7 text-xs leading-6 text-muted">
-            A self-initiated concept study with illustrative data.
-          </p>
-        )}
-        <div className="flex flex-wrap gap-3">
-          <Button to={`/projects/${project.slug}`} onClick={close}>
-            Read the case study
-          </Button>
-          <ProjectLinks project={project} />
-        </div>
-      </div>
-    </motion.div>
-  )
-}
-export default function Projects({ number = '03' }) {
-  const [index, setIndex] = useState(0)
+import { ArrowUpRight } from 'lucide-react'
+import Container from '@/shared/components/Container'
+import SectionTitle from '@/shared/components/SectionTitle'
+import SliderControls from '@/shared/components/SliderControls'
+import TagList from '@/shared/components/TagList'
+import useCarousel from '@/shared/hooks/useCarousel'
+import { projects, statusLabels } from '../data/projects'
+import ProjectMedia from './ProjectMedia'
+import ProjectDialog from './ProjectDialog'
+export default function ProjectsSection({ number = '03' }) {
+  const {
+    index,
+    go: change,
+    onKeyDown,
+    onDragEnd,
+  } = useCarousel(projects.length, {
+    dragThreshold: 60,
+  })
   const [selected, setSelected] = useState(null)
   const dragged = useRef(false)
   const close = useCallback(() => setSelected(null), [])
   const project = projects[index]
   const next = projects[(index + 1) % projects.length]
-  const change = (value) => {
-    dragged.current = false
-    setIndex(value)
-  }
   return (
     <section id="projects" className="section-space overflow-hidden bg-surface">
       <Container>
@@ -106,16 +50,7 @@ export default function Projects({ number = '03' }) {
           aria-roledescription="carousel"
           aria-label="Selected projects"
           tabIndex={0}
-          onKeyDown={(event) => {
-            if (event.key === 'ArrowRight') {
-              event.preventDefault()
-              change((index + 1) % projects.length)
-            }
-            if (event.key === 'ArrowLeft') {
-              event.preventDefault()
-              change((index + projects.length - 1) % projects.length)
-            }
-          }}
+          onKeyDown={onKeyDown}
         >
           <AnimatePresence mode="wait">
             <motion.article
@@ -131,10 +66,7 @@ export default function Projects({ number = '03' }) {
               onDragStart={() => {
                 dragged.current = true
               }}
-              onDragEnd={(_, info) => {
-                if (Math.abs(info.offset.x) > 60)
-                  change((index + (info.offset.x < 0 ? 1 : projects.length - 1)) % projects.length)
-              }}
+              onDragEnd={onDragEnd}
               style={{ touchAction: 'pan-y' }}
             >
               <ProjectMedia project={project} />
@@ -149,13 +81,7 @@ export default function Projects({ number = '03' }) {
                     {project.title}
                   </h3>
                   <p className="mt-4 text-sm text-muted">{project.description}</p>
-                  <div className="mt-6 flex flex-wrap gap-2">
-                    {project.technologies.map((tech) => (
-                      <span className="tag" key={tech}>
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
+                  <TagList items={project.technologies} className="mt-6" />
                   <button
                     className="mt-9 flex w-full items-center justify-between border-t border-white/15 pt-5 text-sm group"
                     onClick={() => {
@@ -202,7 +128,7 @@ export default function Projects({ number = '03' }) {
           </div>
           <button
             className="mt-8 flex w-full items-center justify-between border-b border-white/15 py-5 text-left group"
-            onClick={() => change((index + 1) % projects.length)}
+            onClick={() => change(index + 1)}
           >
             <div>
               <span className="eyebrow text-muted">UP NEXT / {next.id}</span>

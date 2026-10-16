@@ -1,6 +1,6 @@
-import Container from './Container'
 import RevealText from '../animations/RevealText'
 import FadeIn from '../animations/FadeIn'
+import Container from './Container'
 export default function PageHero({ label, title, description, children }) {
   return (
     <section className="page-hero relative overflow-hidden border-b border-white/10">

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { site } from '../../config/site'
+import { site } from '@/config/site'
 /** Find or create a head tag, then set one attribute on it. */
 function setHeadTag(selector, create, attribute, value) {
   let element = document.head.querySelector(selector)

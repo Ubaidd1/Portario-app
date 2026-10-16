@@ -1,7 +1,7 @@
 import { motion, useScroll } from 'framer-motion'
 import Navbar from './Navbar'
 import Footer from './Footer'
-import CustomCursor from '../navigation/CustomCursor'
+import CustomCursor from './CustomCursor'
 export default function Layout({ children }) {
   const { scrollYProgress } = useScroll()
   return (

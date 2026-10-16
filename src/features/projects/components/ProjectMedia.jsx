@@ -1,4 +1,4 @@
-import ProjectVisual from '../visuals/ProjectVisual'
+import ProjectVisual from './ProjectVisual'
 /** A project's screenshot when one is supplied, otherwise its illustrative concept visual. */
 export default function ProjectMedia({
   project,

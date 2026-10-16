@@ -1,3 +1,21 @@
+/** Marquee list shown between sections. */
+export const technologies = [
+  'React',
+  'Python',
+  'Next.js',
+  'AI / ML',
+  'Node.js',
+  'FastAPI',
+  'WordPress',
+  'Shopify',
+  'Webflow',
+  'Framer',
+  'GoHighLevel',
+  'SEO',
+  'Data Science',
+]
+
+/** Constellation nodes: x/y are percentages inside the stack visual. */
 export const stack = [
   { name: 'React', group: 'interface', x: 18, y: 24 },
   { name: 'Next.js', group: 'interface', x: 38, y: 13 },
@@ -21,83 +39,3 @@ export const stackGroups = {
   platform: 'Application infrastructure',
   content: 'Content & commerce',
 }
-export const capabilities = [
-  {
-    title: 'Digital Products',
-    description:
-      'From a first interaction to a coherent product experience. Make the important workflows feel natural.',
-    to: '/services/app-development',
-    visual: 'device',
-  },
-  {
-    title: 'Web Applications',
-    description: 'Responsive, accessible interfaces with a considered structure behind them.',
-    to: '/services/web-development',
-    visual: 'browser',
-  },
-  {
-    title: 'AI Systems',
-    description:
-      'Bounded AI workflows, useful context, and evaluation that goes beyond a compelling demo.',
-    to: '/services/ai-ml',
-    visual: 'neural',
-  },
-  {
-    title: 'Automation',
-    description:
-      'Connect repeatable steps and reduce manual effort with understandable, maintainable workflows.',
-    to: '/services/python-data-science',
-    visual: 'content',
-  },
-  {
-    title: 'Data Platforms',
-    description:
-      'Turn scattered inputs into a clearer picture with reproducible analysis and useful visualization.',
-    to: '/services/python-data-science',
-    visual: 'data',
-  },
-  {
-    title: 'CMS Experiences',
-    description:
-      'Flexible content structures and editing experiences that teams can confidently use.',
-    to: '/services/cms',
-    visual: 'content',
-  },
-]
-export const experiments = [
-  {
-    title: 'Context / conversation',
-    category: 'AI experiments',
-    status: 'EXPERIMENT',
-    detail: 'Explore the boundary between an open prompt and a useful next action.',
-    visual: 'neural',
-  },
-  {
-    title: 'Objects in orbit',
-    category: '3D experiments',
-    status: 'PROTOTYPE',
-    detail: 'A lightweight CSS geometry study. Move your pointer to change the perspective.',
-    visual: 'core',
-  },
-  {
-    title: 'Reading the signal',
-    category: 'Data visualizations',
-    status: 'EXPERIMENT',
-    detail: 'A visual rhythm study using illustrative data, with no real-world metrics.',
-    visual: 'data',
-  },
-  {
-    title: 'Less manual work',
-    category: 'Automation',
-    status: 'IN PROGRESS',
-    detail: 'A workflow concept connecting an input, a transformation, and a review step.',
-    visual: 'content',
-  },
-  {
-    title: 'Interface fragments',
-    category: 'UI concepts',
-    status: 'PROTOTYPE',
-    detail: 'An exploration of spacing, layering, and readable component hierarchy.',
-    visual: 'interface',
-  },
-]

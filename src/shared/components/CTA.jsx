@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { ArrowUpRight } from 'lucide-react'
-import Container from '../common/Container'
 import FadeIn from '../animations/FadeIn'
+import Container from './Container'
 export default function CTA() {
   return (
     <section className="cta-section relative overflow-hidden border-t border-white/15 py-20 md:py-28">

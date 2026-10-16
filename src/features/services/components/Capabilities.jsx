@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Plus } from 'lucide-react'
-import { capabilities } from '../../data/technologies'
-import Container from '../common/Container'
-import SectionTitle from '../common/SectionTitle'
-import TextLink from '../common/TextLink'
-import ServiceVisual from '../visuals/ServiceVisual'
+import Container from '@/shared/components/Container'
+import AccordionItem from '@/shared/components/AccordionItem'
+import SectionTitle from '@/shared/components/SectionTitle'
+import TextLink from '@/shared/components/TextLink'
+import { capabilities } from '../data/capabilities'
+import ServiceVisual from './ServiceVisual'
 export default function Capabilities({ number = '01' }) {
   const [active, setActive] = useState(0)
   return (
@@ -20,50 +21,33 @@ export default function Capabilities({ number = '01' }) {
         <div className="mt-12 grid gap-12 lg:grid-cols-[1.2fr_1fr]">
           <div>
             {capabilities.map((item, index) => (
-              <article
+              <AccordionItem
                 key={item.title}
+                idPrefix="capability"
+                index={index}
+                open={active === index}
+                onToggle={() => setActive(active === index ? null : index)}
+                onHover={() => setActive(index)}
                 className={`border-t ${active === index ? 'border-accent' : 'border-white/15'}`}
-              >
-                <h3>
-                  <button
-                    className="flex w-full items-center gap-5 py-5 text-left"
-                    id={`capability-${index}`}
-                    aria-expanded={active === index}
-                    aria-controls={`capability-detail-${index}`}
-                    onClick={() => setActive(active === index ? null : index)}
-                    onPointerEnter={(event) => {
-                      if (event.pointerType === 'mouse') setActive(index)
-                    }}
-                  >
+                buttonClassName="flex w-full items-center gap-5 py-5 text-left"
+                header={
+                  <>
                     <span className="font-mono text-[10px] text-muted">0{index + 1}</span>
                     <span className="flex-1 text-2xl tracking-tight md:text-3xl">{item.title}</span>
                     <Plus
                       size={18}
                       className={active === index ? 'rotate-45 text-accent-soft' : 'text-muted'}
                     />
-                  </button>
-                </h3>
-                <AnimatePresence initial={false}>
-                  {active === index && (
-                    <motion.div
-                      id={`capability-detail-${index}`}
-                      role="region"
-                      aria-labelledby={`capability-${index}`}
-                      className="overflow-hidden"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                    >
-                      <div className="pb-7 pl-9">
-                        <p className="max-w-sm text-sm leading-7 text-muted">{item.description}</p>
-                        <TextLink to={item.to} className="mt-3">
-                          Explore the possibilities
-                        </TextLink>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </article>
+                  </>
+                }
+              >
+                <div className="pb-7 pl-9">
+                  <p className="max-w-sm text-sm leading-7 text-muted">{item.description}</p>
+                  <TextLink to={item.to} className="mt-3">
+                    Explore the possibilities
+                  </TextLink>
+                </div>
+              </AccordionItem>
             ))}
           </div>
           <div className="hidden lg:block self-center">

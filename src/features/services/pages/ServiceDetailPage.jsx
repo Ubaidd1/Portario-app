@@ -1,20 +1,21 @@
 import { useParams } from 'react-router-dom'
+import SEO from '@/shared/components/SEO'
+import PageHero from '@/shared/components/PageHero'
+import Container from '@/shared/components/Container'
+import Button from '@/shared/components/Button'
+import SectionTitle from '@/shared/components/SectionTitle'
+import AdjacentNavigation from '@/shared/components/AdjacentNavigation'
+import ImageReveal from '@/shared/animations/ImageReveal'
+import { RelatedProjects } from '@/features/projects'
+import CTA from '@/shared/components/CTA'
+import NotFoundPage from '@/shared/pages/NotFoundPage'
+import TagList from '@/shared/components/TagList'
 import { services } from '../data/services'
-import SEO from '../components/common/SEO'
-import PageHero from '../components/common/PageHero'
-import Container from '../components/common/Container'
-import Button from '../components/common/Button'
-import SectionTitle from '../components/common/SectionTitle'
-import AdjacentNavigation from '../components/common/AdjacentNavigation'
-import ServiceVisual from '../components/visuals/ServiceVisual'
-import ImageReveal from '../components/animations/ImageReveal'
-import RelatedProjects from '../components/project/RelatedProjects'
-import CTA from '../components/sections/CTA'
-import NotFound from './NotFound'
-export default function ServiceDetail() {
+import ServiceVisual from '../components/ServiceVisual'
+export default function ServiceDetailPage() {
   const { slug } = useParams()
   const service = services.find((item) => item.slug === slug)
-  if (!service) return <NotFound kind="Service" to="/services" />
+  if (!service) return <NotFoundPage kind="Service" to="/services" />
   return (
     <>
       <SEO title={service.name} description={service.description} />
@@ -55,13 +56,7 @@ export default function ServiceDetail() {
                 </div>
               ))}
               <h3 className="eyebrow mt-8 text-muted">TECHNOLOGY & METHODS</h3>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {service.tags.map((tag) => (
-                  <span className="tag" key={tag}>
-                    {tag}
-                  </span>
-                ))}
-              </div>
+              <TagList items={service.tags} className="mt-4" />
             </div>
           </div>
         </section>

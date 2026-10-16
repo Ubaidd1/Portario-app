@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { ArrowUpRight, Check, LoaderCircle, Mail } from 'lucide-react'
-import { services } from '../../data/services'
-import { site } from '../../config/site'
-import { contactMode } from '../../utils/contact'
-import useEnquiryForm from '../../hooks/useEnquiryForm'
-import EnquiryFields from '../contact/EnquiryFields'
-import Container from '../common/Container'
-import DigitalCore from '../visuals/DigitalCore'
+import { services } from '@/features/services/data/services'
+import { site } from '@/config/site'
+import Container from '@/shared/components/Container'
+import DigitalCore from '@/shared/visuals/DigitalCore'
+import { contactMode } from '../lib/delivery'
+import useEnquiryForm from '../hooks/useEnquiryForm'
+import EnquiryFields from './EnquiryFields'
 function EmailLink({ className = '' }) {
   if (!site.email) return null
   return (
@@ -44,7 +44,7 @@ function Confirmation({ status, reset }) {
     </div>
   )
 }
-export default function Contact() {
+export default function ContactSection() {
   const [params] = useSearchParams()
   const service = services.find((item) => item.name === params.get('service'))
   const form = useEnquiryForm(service ? `Project enquiry: ${service.name}` : '')

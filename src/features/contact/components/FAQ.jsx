@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
 import { Plus } from 'lucide-react'
-import { faqs } from '../../data/faq'
-import Container from '../common/Container'
-import SectionTitle from '../common/SectionTitle'
+import Container from '@/shared/components/Container'
+import AccordionItem from '@/shared/components/AccordionItem'
+import SectionTitle from '@/shared/components/SectionTitle'
+import { faqs } from '../data/faq'
 export default function FAQ({ number = '10' }) {
   const [active, setActive] = useState(0)
   return (
@@ -31,18 +31,16 @@ export default function FAQ({ number = '10' }) {
           </div>
           <div>
             {faqs.map((faq, index) => (
-              <article
-                className={`border-b border-white/15 ${active === index ? 'border-b-accent bg-white/[.025]' : ''}`}
+              <AccordionItem
                 key={faq.question}
-              >
-                <h3>
-                  <button
-                    id={`faq-button-${index}`}
-                    aria-expanded={active === index}
-                    aria-controls={`faq-panel-${index}`}
-                    onClick={() => setActive(active === index ? null : index)}
-                    className="flex w-full items-center gap-4 py-6 text-left"
-                  >
+                idPrefix="faq"
+                index={index}
+                open={active === index}
+                onToggle={() => setActive(active === index ? null : index)}
+                className={`border-b border-white/15 ${active === index ? 'border-b-accent bg-white/[.025]' : ''}`}
+                buttonClassName="flex w-full items-center gap-4 py-6 text-left"
+                header={
+                  <>
                     <span className="mr-1 font-mono text-[10px] text-muted">0{index + 1}</span>
                     <span className="flex-1 text-base font-medium tracking-tight sm:text-lg">
                       {faq.question}
@@ -51,24 +49,11 @@ export default function FAQ({ number = '10' }) {
                       size={19}
                       className={`shrink-0 transition-transform ${active === index ? 'rotate-45 text-accent-soft' : ''}`}
                     />
-                  </button>
-                </h3>
-                <AnimatePresence initial={false}>
-                  {active === index && (
-                    <motion.div
-                      id={`faq-panel-${index}`}
-                      role="region"
-                      aria-labelledby={`faq-button-${index}`}
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="overflow-hidden"
-                    >
-                      <p className="pb-7 pl-9 pr-5 text-sm leading-7 text-muted">{faq.answer}</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </article>
+                  </>
+                }
+              >
+                <p className="pb-7 pl-9 pr-5 text-sm leading-7 text-muted">{faq.answer}</p>
+              </AccordionItem>
             ))}
           </div>
         </div>

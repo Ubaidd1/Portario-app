@@ -1,0 +1,114 @@
+/* Site shell: logo, navigation, footer, ambient background and custom cursor. */
+@layer components {
+  .logo {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.075em;
+  }
+  .logo > span {
+    display: inline-block;
+    font-size: 13px;
+    margin-left: 2px;
+    vertical-align: top;
+    padding-top: 3px;
+  }
+  .nav-link {
+    position: relative;
+    font-size: 12px;
+    color: var(--color-muted);
+    padding-block: 16px;
+    transition: color 0.2s;
+  }
+  .nav-link:hover,
+  .nav-link.is-active {
+    color: var(--color-text);
+  }
+  .nav-link.is-active::after {
+    content: '';
+    position: absolute;
+    bottom: 7px;
+    left: calc(50% - 2px);
+    width: 4px;
+    height: 4px;
+    background: var(--color-accent);
+    border-radius: 50%;
+  }
+  .footer-link {
+    color: var(--color-mid);
+    font-size: 13px;
+    padding-block: 2px;
+    transition: color 0.2s;
+  }
+  .footer-link:hover {
+    color: var(--color-accent-soft);
+  }
+  .footer-wordmark {
+    font-size: clamp(3rem, 15.5vw, 217px);
+    font-weight: 800;
+    letter-spacing: -0.075em;
+    line-height: 1.1;
+  }
+  .footer-wordmark span {
+    display: inline-block;
+    font-size: 0.24em;
+    vertical-align: top;
+    padding-top: 0.18em;
+    margin-left: 0.1em;
+  }
+  .global-atmosphere {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background: radial-gradient(
+      ellipse at 90% 10%,
+      color-mix(in srgb, var(--color-accent) 2%, transparent),
+      transparent 45%
+    );
+  }
+  .custom-cursor {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 120;
+    pointer-events: none;
+  }
+  .custom-cursor > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 7px;
+    height: 7px;
+    background: var(--color-accent);
+    border: 1px solid var(--color-accent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition:
+      width 0.2s,
+      height 0.2s,
+      background 0.2s;
+    white-space: nowrap;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+  }
+  .cursor-link > span {
+    width: 36px;
+    height: 36px;
+    background: color-mix(in srgb, var(--color-accent) 5%, transparent);
+  }
+  .cursor-image > span,
+  .cursor-project > span {
+    width: 105px;
+    height: 105px;
+    background: color-mix(in srgb, var(--color-accent) 91%, transparent);
+    color: var(--color-white);
+  }
+  .cursor-cta > span {
+    width: 44px;
+    height: 44px;
+    background: var(--color-text);
+    border-color: var(--color-text);
+    color: var(--color-background);
+    font-size: 24px;
+  }
+}

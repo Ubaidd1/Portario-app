@@ -1,11 +1,11 @@
-import TextLink from '../common/TextLink'
 import { useRef, useState } from 'react'
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
-import { process } from '../../data/process'
-import Container from '../common/Container'
-import SectionTitle from '../common/SectionTitle'
-export default function Process({ number = '05' }) {
+import TextLink from '@/shared/components/TextLink'
+import Container from '@/shared/components/Container'
+import SectionTitle from '@/shared/components/SectionTitle'
+import { process } from '../data/process'
+export default function ProcessSection({ number = '05' }) {
   const ref = useRef(null)
   const [active, setActive] = useState(0)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 80%', 'end 30%'] })

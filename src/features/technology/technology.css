@@ -1,0 +1,95 @@
+/* Technology marquee and constellation. */
+@layer components {
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 45s linear infinite;
+  }
+  .marquee-track.reverse {
+    animation-direction: reverse;
+    animation-duration: 50s;
+  }
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+  .marquee-group {
+    display: flex;
+    flex-shrink: 0;
+  }
+  @keyframes marquee {
+    to {
+      transform: translateX(-25%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+    }
+  }
+  .technology-constellation {
+    position: relative;
+    height: 420px;
+    background: radial-gradient(
+      ellipse at center,
+      color-mix(in srgb, var(--color-accent) 4%, transparent),
+      transparent 65%
+    );
+  }
+  .constellation-lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .technology-node {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    transform: translate(-50%, -50%);
+    min-height: 44px;
+    padding: 10px 15px;
+    font-size: 22px;
+    letter-spacing: -0.04em;
+    color: var(--color-muted);
+    transition:
+      color 0.2s,
+      background 0.2s;
+    white-space: nowrap;
+  }
+  .technology-node.connected {
+    color: var(--color-text);
+  }
+  .technology-node.selected {
+    color: var(--color-accent-soft);
+    background: var(--color-surface);
+    text-shadow: 0 0 30px color-mix(in srgb, var(--color-accent) 27%, transparent);
+  }
+  .technology-point {
+    display: block;
+    margin: 5px auto 0;
+    width: 3px;
+    height: 3px;
+    background: currentColor;
+    border-radius: 50%;
+  }
+  @media (max-width: 767px) {
+    .technology-constellation {
+      height: auto;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .constellation-lines {
+      display: none;
+    }
+    .technology-node {
+      position: static;
+      transform: none;
+      padding: 15px 5px;
+      border: 1px solid #ffffff15;
+      font-size: 13px;
+      white-space: normal;
+    }
+  }
+}

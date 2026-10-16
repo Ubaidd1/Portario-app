@@ -1,0 +1,26 @@
+/*
+ * Design tokens. Every colour in the interface comes from this block; Tailwind
+ * exposes each one as a utility (bg-surface, text-accent-soft, border-line…).
+ * accent / accent-deep are fills (buttons, bars, glows) and carry white text.
+ * accent-soft is the readable blue for text and icons on the dark surfaces.
+ */
+@theme {
+  --color-background: #17191d;
+  --color-surface: #22252b;
+  --color-surface-raised: #2b2f36;
+  --color-line: #363b45;
+  --color-accent: #2563eb;
+  --color-accent-deep: #1d4ed8;
+  --color-accent-soft: #6b9af2;
+  --color-text: #f1f3f5;
+  --color-muted: #a7adb7;
+  --color-light: #f1f3f5;
+  --color-mid: #d9dee5;
+  --color-ink: #252932;
+  --color-ink-muted: #4b5260;
+  --color-white: #ffffff;
+  --color-danger: #b42318;
+  --color-field-border: #767e8a;
+  --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+}

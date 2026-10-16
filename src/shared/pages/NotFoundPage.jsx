@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom'
-import SEO from '../components/common/SEO'
-import Container from '../components/common/Container'
-import Button from '../components/common/Button'
-import SplitText from '../components/animations/SplitText'
+import SEO from '../components/SEO'
+import Container from '../components/Container'
+import Button from '../components/Button'
+import SplitText from '../animations/SplitText'
 const suggestions = [
   { label: 'Selected projects', to: '/projects' },
   { label: 'Services', to: '/services' },
   { label: 'About', to: '/about' },
   { label: 'Contact', to: '/contact' },
 ]
-export default function NotFound({ kind = 'Page', to = '/' }) {
+export default function NotFoundPage({ kind = 'Page', to = '/' }) {
   return (
     <>
       <SEO

@@ -1,8 +1,8 @@
-import SEO from '../components/common/SEO'
-import PageHero from '../components/common/PageHero'
-import ContactForm from '../components/sections/Contact'
-import FAQ from '../components/sections/FAQ'
-export default function Contact() {
+import SEO from '@/shared/components/SEO'
+import PageHero from '@/shared/components/PageHero'
+import ContactSection from '../components/ContactSection'
+import FAQ from '../components/FAQ'
+export default function ContactPage() {
   return (
     <>
       <SEO
@@ -14,7 +14,7 @@ export default function Contact() {
         title="LET’S BUILD SOMETHING MEANINGFUL."
         description="An idea, a challenge, or a new chapter. You bring the ambition. We’ll find a practical way forward."
       />
-      <ContactForm />
+      <ContactSection />
       <FAQ />
     </>
   )

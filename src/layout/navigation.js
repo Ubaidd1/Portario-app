@@ -6,18 +6,3 @@ export const navigation = [
   { label: 'Process', to: '/process' },
   { label: 'Experience', to: '/experience' },
 ]
-export const technologies = [
-  'React',
-  'Python',
-  'Next.js',
-  'AI / ML',
-  'Node.js',
-  'FastAPI',
-  'WordPress',
-  'Shopify',
-  'Webflow',
-  'Framer',
-  'GoHighLevel',
-  'SEO',
-  'Data Science',
-]

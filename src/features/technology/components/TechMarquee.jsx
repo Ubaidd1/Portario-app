@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Pause, Play } from 'lucide-react'
-import { technologies } from '../../data/navigation'
+import { technologies } from '../data/technologies'
 export default function TechMarquee() {
   const [paused, setPaused] = useState(false)
   return (

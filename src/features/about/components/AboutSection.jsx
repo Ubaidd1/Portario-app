@@ -1,9 +1,10 @@
-import TextLink from '../common/TextLink'
 import { ArrowUpRight } from 'lucide-react'
-import Container from '../common/Container'
-import FadeIn from '../animations/FadeIn'
-import Sculpture from '../visuals/Sculpture'
-export default function About({ number = '02' }) {
+import TextLink from '@/shared/components/TextLink'
+import Container from '@/shared/components/Container'
+import FadeIn from '@/shared/animations/FadeIn'
+import Sculpture from '@/shared/visuals/Sculpture'
+import TagList from '@/shared/components/TagList'
+export default function AboutSection({ number = '02' }) {
   return (
     <section id="about" className="section-space">
       <Container>
@@ -53,13 +54,11 @@ export default function About({ number = '02' }) {
               <br />
               <span className="text-muted">Driven by curiosity.</span>
             </p>
-            <div className="mt-7 flex flex-wrap gap-2">
-              {['CODE', 'DESIGN', 'AI', 'DATA', 'AUTOMATION'].map((label) => (
-                <span className="tag" key={label}>
-                  {label}
-                </span>
-              ))}
-            </div>
+            <TagList
+              items={['CODE', 'DESIGN', 'AI', 'DATA', 'AUTOMATION']}
+              label="Focus areas"
+              className="mt-7"
+            />
           </div>
           <div className="about-sculpture">
             <Sculpture compact />

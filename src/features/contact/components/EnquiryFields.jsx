@@ -1,4 +1,4 @@
-import { contactLimits } from '../../utils/contactValidation'
+import { contactLimits } from '../lib/validation'
 function Field({ label, name, error, hint, children }) {
   return (
     <div>

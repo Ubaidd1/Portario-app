@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useMotionValue, useSpring, useReducedMotion } from 'framer-motion'
-import useMediaQuery from '../../hooks/useMediaQuery'
+import useMediaQuery from '@/shared/hooks/useMediaQuery'
 export default function CustomCursor() {
   const enabled = useMediaQuery('(hover: hover) and (pointer: fine) and (min-width: 1024px)')
   const reduced = useReducedMotion()

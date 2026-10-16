@@ -1,8 +1,9 @@
-import { experience } from '../../data/experience'
-import Container from '../common/Container'
-import SectionTitle from '../common/SectionTitle'
-import TextLink from '../common/TextLink'
-import FadeIn from '../animations/FadeIn'
+import Container from '@/shared/components/Container'
+import SectionTitle from '@/shared/components/SectionTitle'
+import TextLink from '@/shared/components/TextLink'
+import FadeIn from '@/shared/animations/FadeIn'
+import TagList from '@/shared/components/TagList'
+import { experience } from '../data/experience'
 /** Verified roles, newest first. Renders nothing until `experience` has entries. */
 export default function ExperienceSection({ number = '05', limit, showLink = true }) {
   if (!experience.length) return null
@@ -53,15 +54,7 @@ export default function ExperienceSection({ number = '05', limit, showLink = tru
                       ))}
                     </ul>
                   )}
-                  {item.technologies?.length > 0 && (
-                    <ul className="mt-5 flex flex-wrap gap-2" aria-label="Technologies">
-                      {item.technologies.map((tech) => (
-                        <li key={tech} className="tag">
-                          {tech}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+                  <TagList items={item.technologies} className="mt-5" />
                 </div>
               </FadeIn>
             </li>

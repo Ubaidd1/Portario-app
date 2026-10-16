@@ -1,0 +1,269 @@
+/* Project visuals, mock-ups, screenshots, case-study layout, architecture diagram and gallery. */
+@layer components {
+  .project-visual {
+    position: relative;
+    min-width: 0;
+    min-height: 425px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .project-art-inner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 36px;
+    transition: transform 0.7s;
+    pointer-events: none;
+    user-select: none;
+  }
+  .project-visual:hover .project-art-inner {
+    transform: scale(1.025);
+  }
+  .visual-forma {
+    background: var(--color-mid);
+    background-image: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-white) 27%, transparent),
+      transparent
+    );
+  }
+  .visual-frequency {
+    background: #1a2236;
+    background-image: radial-gradient(
+      ellipse at 30% 20%,
+      color-mix(in srgb, var(--color-accent-deep) 40%, transparent),
+      transparent 65%
+    );
+  }
+  .visual-nova {
+    background: var(--color-surface-raised);
+    background-image: radial-gradient(
+      ellipse at 70% 50%,
+      color-mix(in srgb, var(--color-accent) 20%, transparent),
+      transparent 70%
+    );
+  }
+  .visual-indigo {
+    background: var(--color-accent-deep);
+    background-image: linear-gradient(135deg, var(--color-accent), var(--color-accent-deep));
+  }
+  .mock-app {
+    width: 500px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 24px 50px #0003;
+  }
+  .forma-app {
+    display: flex;
+    min-height: 310px;
+    background: var(--color-white);
+    color: var(--color-surface-raised);
+    transform: perspective(1000px) rotateY(5deg) rotateX(3deg) rotateZ(-3deg);
+  }
+  .mock-sidebar {
+    width: 100px;
+    padding: 20px 10px;
+    border-right: 1px solid var(--color-mid);
+    background: var(--color-light);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .mock-nav {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 8px;
+    color: var(--color-ink-muted);
+    margin-bottom: 12px;
+    padding: 5px;
+  }
+  .mock-nav.active {
+    color: var(--color-ink);
+    background: var(--color-mid);
+    border-radius: 3px;
+  }
+  .mock-main {
+    padding: 17px;
+    flex: 1;
+    min-width: 0;
+  }
+  .mock-stat {
+    border: 1px solid var(--color-mid);
+    padding: 10px;
+    border-radius: 4px;
+  }
+  .frequency-app,
+  .nova-app {
+    background: var(--color-surface);
+    color: var(--color-text);
+    padding: 24px;
+    border: 1px solid #ffffff20;
+    transform: perspective(1000px) rotateY(-4deg) rotateZ(2deg);
+  }
+  .nova-app {
+    transform: perspective(1000px) rotateY(4deg) rotateZ(-2deg);
+  }
+  .nova-spark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 55px;
+    height: 55px;
+    font-size: 55px;
+    color: var(--color-accent-soft);
+  }
+  .indigo-app {
+    background: var(--color-light);
+    color: var(--color-ink);
+    padding: 25px;
+    transform: rotate(-4deg);
+  }
+  .next-project-preview {
+    min-height: 88px;
+    height: 88px;
+  }
+  .next-project-preview .project-art-inner {
+    padding: 0;
+    height: 88px;
+  }
+  .next-project-preview .mock-app {
+    scale: 0.24;
+  }
+  @media (min-width: 1024px) {
+    .project-reversed .project-visual {
+      order: 2;
+    }
+    .project-reversed {
+      grid-template-columns: 1fr 1.65fr;
+    }
+  }
+  @media (max-width: 1100px) {
+    .mock-app {
+      width: 460px;
+    }
+  }
+  @media (max-width: 767px) {
+    .project-visual {
+      min-height: 340px;
+    }
+    .mock-app {
+      width: 450px;
+    }
+    .project-art-inner {
+      padding: 15px;
+    }
+  }
+  @media (max-width: 540px) {
+    .project-visual {
+      min-height: 290px;
+    }
+    .mock-app {
+      scale: 0.77;
+    }
+    .project-art-inner {
+      height: 300px;
+    }
+  }
+  @media (max-width: 380px) {
+    .mock-app {
+      scale: 0.62;
+    }
+    .project-visual {
+      min-height: 250px;
+    }
+    .project-art-inner {
+      height: 260px;
+    }
+  }
+  .architecture-node {
+    display: block;
+    width: 100%;
+    min-height: 155px;
+    padding: 20px;
+    border: 1px solid #ffffff15;
+    text-align: left;
+    background: var(--color-surface);
+    transition:
+      border-color 0.25s,
+      background 0.25s;
+  }
+  .architecture-node.connected {
+    border-color: color-mix(in srgb, var(--color-accent) 27%, transparent);
+  }
+  .architecture-node.active {
+    border-color: var(--color-accent);
+    background: #1b2540;
+  }
+  .case-hero-visual {
+    min-height: 570px;
+  }
+  .case-hero-visual .mock-app {
+    scale: 1.2;
+  }
+  .design-detail-visual .project-art-inner {
+    transform: scale(1.35) translateX(5%);
+  }
+  .gallery-strip {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    padding: 5px 5px 24px;
+    scroll-snap-type: x mandatory;
+    scrollbar-color: var(--color-accent) var(--color-surface);
+  }
+  .gallery-item {
+    width: 65%;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+  .gallery-frame {
+    position: relative;
+    height: min(55vh, 530px);
+    min-height: 280px;
+    overflow: hidden;
+  }
+  .gallery-view-1 .project-art-inner {
+    transform: scale(1.3) translateX(7%);
+  }
+  .gallery-view-2 .project-art-inner {
+    transform: scale(1.65) translate(-5%, 7%);
+  }
+  .gallery-view-1 .project-visual {
+    filter: saturate(0.4);
+  }
+  @media (max-width: 767px) {
+    .case-hero-visual {
+      min-height: 320px;
+    }
+    .case-hero-visual .mock-app {
+      scale: 0.77;
+    }
+    .gallery-item {
+      width: 90%;
+    }
+    .gallery-frame {
+      min-height: 270px;
+      height: 320px;
+    }
+  }
+  .project-image {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    background: var(--color-surface);
+  }
+  .project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s;
+  }
+  .group:hover .project-image img {
+    transform: scale(1.025);
+  }
+}

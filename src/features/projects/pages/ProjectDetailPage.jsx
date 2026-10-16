@@ -1,23 +1,24 @@
 import { useParams } from 'react-router-dom'
+import SEO from '@/shared/components/SEO'
+import PageHero from '@/shared/components/PageHero'
+import Container from '@/shared/components/Container'
+import SectionTitle from '@/shared/components/SectionTitle'
+import AdjacentNavigation from '@/shared/components/AdjacentNavigation'
+import ImageReveal from '@/shared/animations/ImageReveal'
+import StaggerChildren from '@/shared/animations/StaggerChildren'
+import CTA from '@/shared/components/CTA'
+import NotFoundPage from '@/shared/pages/NotFoundPage'
+import TagList from '@/shared/components/TagList'
 import { projects, statusLabels } from '../data/projects'
-import SEO from '../components/common/SEO'
-import PageHero from '../components/common/PageHero'
-import Container from '../components/common/Container'
-import SectionTitle from '../components/common/SectionTitle'
-import AdjacentNavigation from '../components/common/AdjacentNavigation'
-import ImageReveal from '../components/animations/ImageReveal'
-import StaggerChildren from '../components/animations/StaggerChildren'
-import ProjectMedia from '../components/project/ProjectMedia'
-import ProjectLinks from '../components/project/ProjectLinks'
-import ArchitectureDiagram from '../components/project/ArchitectureDiagram'
-import ProjectGallery from '../components/project/ProjectGallery'
-import RelatedProjects from '../components/project/RelatedProjects'
-import CTA from '../components/sections/CTA'
-import NotFound from './NotFound'
-export default function ProjectDetail() {
+import ProjectMedia from '../components/ProjectMedia'
+import ProjectLinks from '../components/ProjectLinks'
+import ArchitectureDiagram from '../components/ArchitectureDiagram'
+import ProjectGallery from '../components/ProjectGallery'
+import RelatedProjects from '../components/RelatedProjects'
+export default function ProjectDetailPage() {
   const { slug } = useParams()
   const project = projects.find((item) => item.slug === slug)
-  if (!project) return <NotFound kind="Project" to="/projects" />
+  if (!project) return <NotFoundPage kind="Project" to="/projects" />
   const concept = project.status === 'concept'
   let section = 0
   const number = () => String(++section).padStart(2, '0')
@@ -102,13 +103,7 @@ export default function ProjectDetail() {
             <p className="mt-7 text-base leading-8 text-muted">{project.approach}</p>
             <h3 className="mt-8 text-xl tracking-tight">The design language</h3>
             <p className="mt-4 text-sm leading-7 text-muted">{project.design}</p>
-            <ul className="mt-7 flex flex-wrap gap-2" aria-label="Technologies">
-              {project.technologies.map((tech) => (
-                <li className="tag" key={tech}>
-                  {tech}
-                </li>
-              ))}
-            </ul>
+            <TagList items={project.technologies} className="mt-7" />
           </div>
           <ImageReveal>
             <div className="design-detail-visual">

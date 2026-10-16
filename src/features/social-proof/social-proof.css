@@ -1,0 +1,39 @@
+/* Awards emblem. */
+@layer components {
+  .award-emblem {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 230px;
+    height: 230px;
+    border: 1px solid #ffffff20;
+    border-radius: 50%;
+    background: radial-gradient(
+      ellipse,
+      color-mix(in srgb, var(--color-accent) 4%, transparent),
+      transparent 70%
+    );
+  }
+  .award-emblem::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border: 1px dashed color-mix(in srgb, var(--color-accent) 40%, transparent);
+    border-radius: 50%;
+  }
+  .award-emblem > span:first-child {
+    font-size: 75px;
+    font-weight: 800;
+    letter-spacing: -0.07em;
+  }
+  .award-index {
+    position: absolute;
+    left: -20px;
+    bottom: -15px;
+    font-size: 80px;
+    letter-spacing: -0.07em;
+    color: transparent;
+    -webkit-text-stroke: 1px #ffffff26;
+  }
+}

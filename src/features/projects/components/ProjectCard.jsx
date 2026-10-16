@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
-import { statusLabels } from '../../data/projects'
+import TagList from '@/shared/components/TagList'
+import { statusLabels } from '../data/projects'
 import ProjectMedia from './ProjectMedia'
 export default function ProjectCard({ project, index = 0 }) {
   return (
@@ -26,13 +27,7 @@ export default function ProjectCard({ project, index = 0 }) {
               {project.title}
             </h3>
             <p className="mt-3 text-sm text-muted">{project.description}</p>
-            <ul className="mt-4 flex flex-wrap gap-2" aria-label="Technologies">
-              {project.technologies.map((tech) => (
-                <li className="tag" key={tech}>
-                  {tech}
-                </li>
-              ))}
-            </ul>
+            <TagList items={project.technologies} className="mt-4" />
           </div>
           <ArrowUpRight
             className="mt-2 shrink-0 text-muted transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-accent-soft"

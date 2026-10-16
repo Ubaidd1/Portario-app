@@ -1,0 +1,36 @@
+/* About section visual. */
+@layer components {
+  .about-visual {
+    position: relative;
+    height: 370px;
+    border: 1px solid #ffffff15;
+    overflow: hidden;
+    background-color: var(--color-surface);
+    background-image:
+      linear-gradient(#ffffff03 1px, transparent 1px),
+      linear-gradient(90deg, #ffffff03 1px, transparent 1px);
+    background-size: 45px 45px;
+  }
+  .about-sculpture {
+    position: absolute;
+    right: 0;
+    top: -50px;
+    width: 50%;
+    height: 470px;
+    opacity: 0.9;
+  }
+  .about-sculpture .sculpture-caption {
+    display: none;
+  }
+  @media (max-width: 767px) {
+    .about-visual {
+      height: 330px;
+    }
+    .about-sculpture {
+      width: 80%;
+      right: -28%;
+      top: -40px;
+      opacity: 0.45;
+    }
+  }
+}

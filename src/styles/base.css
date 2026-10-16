@@ -1,0 +1,111 @@
+/* Element defaults, focus handling, global typography helpers and motion preferences. */
+@layer components {
+  :root {
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    background: var(--color-background);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px;
+  }
+  body {
+    margin: 0;
+    min-width: 320px;
+    /* Guard against transient sideways scroll (e.g. icons mid-transition on rotate);
+       clip, unlike hidden, keeps position: sticky working. */
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-white);
+  }
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    -webkit-tap-highlight-color: transparent;
+  }
+  button,
+  a {
+    touch-action: manipulation;
+  }
+  button {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: wait;
+  }
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  [tabindex] {
+    outline-offset: 5px;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-accent-soft);
+  }
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+  button {
+    -webkit-appearance: none;
+  }
+  .skip-link {
+    position: fixed;
+    top: -100px;
+    left: 20px;
+    padding: 12px 20px;
+    background: var(--color-accent);
+    color: var(--color-white);
+    z-index: 110;
+  }
+  .skip-link:focus {
+    top: 12px;
+  }
+  .section-space {
+    padding-block: 108px;
+  }
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.13em;
+    line-height: 1.7;
+  }
+  .section-title {
+    font-size: clamp(2.25rem, 4.3vw, 4rem);
+    font-weight: 500;
+    letter-spacing: -0.055em;
+    line-height: 1.08;
+  }
+  @media (max-width: 767px) {
+    .section-space {
+      padding-block: 72px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  /* Purely decorative lettering lives in generated content so it isn't read or contrast-checked as text. */
+  .decorative-text::before {
+    content: attr(data-text);
+  }
+}

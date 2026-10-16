@@ -11,7 +11,7 @@
  *   CONTACT_FROM_EMAIL      verified sender, e.g. "Folioblox <hello@your-domain.com>"
  *   CONTACT_ALLOWED_ORIGIN  optional, e.g. https://www.your-domain.com
  */
-import { normaliseContact, validateContact } from '../src/utils/contactValidation.js'
+import { normaliseContact, validateContact } from '../src/features/contact/lib/validation.js'
 
 const WINDOW_MS = 10 * 60 * 1000
 const MAX_PER_WINDOW = 5

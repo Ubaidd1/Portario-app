@@ -1,14 +1,14 @@
-import SEO from '../components/common/SEO'
-import PageHero from '../components/common/PageHero'
-import Container from '../components/common/Container'
-import SectionTitle from '../components/common/SectionTitle'
-import EditorialTimeline from '../components/common/EditorialTimeline'
-import FadeIn from '../components/animations/FadeIn'
-import DigitalCore from '../components/visuals/DigitalCore'
-import Lab from '../components/sections/Lab'
-import CTA from '../components/sections/CTA'
-import { principles, journey } from '../data/experience'
-export default function About() {
+import SEO from '@/shared/components/SEO'
+import PageHero from '@/shared/components/PageHero'
+import Container from '@/shared/components/Container'
+import SectionTitle from '@/shared/components/SectionTitle'
+import EditorialTimeline from '@/shared/components/EditorialTimeline'
+import FadeIn from '@/shared/animations/FadeIn'
+import DigitalCore from '@/shared/visuals/DigitalCore'
+import CTA from '@/shared/components/CTA'
+import Lab from '../components/Lab'
+import { principles, journey } from '../data/about'
+export default function AboutPage() {
   return (
     <>
       <SEO

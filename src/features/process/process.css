@@ -1,0 +1,49 @@
+/* Process timeline (home) and the scroll-driven process journey. */
+@layer components {
+  .process-step {
+    padding-top: 35px;
+  }
+  .timeline-dot {
+    position: absolute;
+    top: -4px;
+    left: 0;
+    width: 9px;
+    height: 9px;
+    border: 1px solid var(--color-line);
+    border-radius: 50%;
+    background: var(--color-surface);
+  }
+  .process-step.active .timeline-dot {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--color-accent) 7%, transparent);
+  }
+  .process-step.active .process-number {
+    color: var(--color-accent-soft);
+    transform: translateY(-3px);
+  }
+  @media (max-width: 767px) {
+    .timeline {
+      border-left: 1px solid #ffffff25;
+      margin-left: 4px;
+    }
+    .process-step {
+      padding-left: 28px;
+      padding-top: 0;
+    }
+    .timeline-dot {
+      left: -5px;
+      top: 12px;
+    }
+  }
+  .process-journey {
+    height: 460vh;
+    position: relative;
+  }
+  .process-display-number {
+    font-size: clamp(80px, 10vw, 145px);
+    letter-spacing: -0.09em;
+    line-height: 1;
+    color: var(--color-accent-soft);
+  }
+}

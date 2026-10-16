@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { experiments } from '../../data/technologies'
-import Container from '../common/Container'
-import SectionTitle from '../common/SectionTitle'
-import DigitalCore from '../visuals/DigitalCore'
-import ServiceVisual from '../visuals/ServiceVisual'
+import Container from '@/shared/components/Container'
+import SectionTitle from '@/shared/components/SectionTitle'
+import DigitalCore from '@/shared/visuals/DigitalCore'
+import { ServiceVisual } from '@/features/services'
+import { experiments } from '../data/about'
 export default function Lab({ number = '04' }) {
   const [index, setIndex] = useState(1)
   const [moving, setMoving] = useState(true)

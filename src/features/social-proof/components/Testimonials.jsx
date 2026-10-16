@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useInView, useReducedMotion } from 'framer-motion'
 import { Pause, Play } from 'lucide-react'
-import { testimonials } from '../../data/testimonials'
-import Container from '../common/Container'
-import SectionTitle from '../common/SectionTitle'
-import SliderControls from '../common/SliderControls'
+import Container from '@/shared/components/Container'
+import SectionTitle from '@/shared/components/SectionTitle'
+import SliderControls from '@/shared/components/SliderControls'
+import useCarousel from '@/shared/hooks/useCarousel'
+import { testimonials } from '../data/testimonials'
 export default function Testimonials({ number = '08' }) {
-  const [index, setIndex] = useState(0)
+  const { index, go, next: advance } = useCarousel(testimonials.length)
   const [paused, setPaused] = useState(false)
   const [hover, setHover] = useState(false)
   const [hidden, setHidden] = useState(false)
@@ -21,12 +22,12 @@ export default function Testimonials({ number = '08' }) {
   }, [])
   useEffect(() => {
     if (stopped) return
-    const timer = setInterval(() => setIndex((value) => (value + 1) % testimonials.length), 8000)
+    const timer = setInterval(advance, 8000)
     return () => clearInterval(timer)
-  }, [stopped])
+  }, [stopped, advance])
   const change = (value) => {
     setPaused(true)
-    setIndex((value + testimonials.length) % testimonials.length)
+    go(value)
   }
   if (!testimonials.length) return null
   const current = testimonials[index],

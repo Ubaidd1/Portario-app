@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { normaliseContact, validateContact } from '../utils/contactValidation'
-import { contactMode, enquiryMailto, sendEnquiry } from '../utils/contact'
+import { normaliseContact, validateContact } from '../lib/validation'
+import { contactMode, enquiryMailto, sendEnquiry } from '../lib/delivery'
 const TIMEOUT_MS = 15000
 /** State for the contact form: idle → submitting → sent | opened-email, or an error. */
 export default function useEnquiryForm(initialSubject = '') {

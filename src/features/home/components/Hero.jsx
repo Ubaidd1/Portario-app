@@ -1,11 +1,11 @@
 import { useRef } from 'react'
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
-import Container from '../common/Container'
-import Button from '../common/Button'
-import DigitalCore from '../visuals/DigitalCore'
-import MagneticButton from '../common/MagneticButton'
-import { site, socialLinks } from '../../config/site'
+import Container from '@/shared/components/Container'
+import Button from '@/shared/components/Button'
+import DigitalCore from '@/shared/visuals/DigitalCore'
+import MagneticButton from '@/shared/components/MagneticButton'
+import { site, socialLinks } from '@/config/site'
 export default function Hero() {
   const reduced = useReducedMotion()
   const ref = useRef(null)

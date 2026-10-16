@@ -1,17 +1,17 @@
 import { useSearchParams } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
+import SEO from '@/shared/components/SEO'
+import PageHero from '@/shared/components/PageHero'
+import Container from '@/shared/components/Container'
+import CTA from '@/shared/components/CTA'
 import { projects } from '../data/projects'
 import { projectFilters } from '../data/caseStudies'
-import SEO from '../components/common/SEO'
-import PageHero from '../components/common/PageHero'
-import Container from '../components/common/Container'
-import ProjectCard from '../components/project/ProjectCard'
-import CTA from '../components/sections/CTA'
+import ProjectCard from '../components/ProjectCard'
 // Only offer filters that match at least one published project.
 const filters = projectFilters.filter(
   (category) => category === 'All' || projects.some((project) => project.filter === category),
 )
-export default function Projects() {
+export default function ProjectsPage() {
   const [params, setParams] = useSearchParams()
   const filter = filters.includes(params.get('category')) ? params.get('category') : 'All'
   const visible = projects.filter((project) => filter === 'All' || project.filter === filter)

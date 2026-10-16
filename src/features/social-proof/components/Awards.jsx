@@ -1,11 +1,11 @@
-import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { awards } from '../../data/awards'
-import Container from '../common/Container'
-import SectionTitle from '../common/SectionTitle'
-import SliderControls from '../common/SliderControls'
+import Container from '@/shared/components/Container'
+import SectionTitle from '@/shared/components/SectionTitle'
+import SliderControls from '@/shared/components/SliderControls'
+import useCarousel from '@/shared/hooks/useCarousel'
+import { awards } from '../data/awards'
 export default function Awards({ number = '09' }) {
-  const [index, setIndex] = useState(0)
+  const { index, go, onKeyDown, onDragEnd } = useCarousel(awards.length)
   const award = awards[index]
   if (!award) return null
   return (
@@ -30,10 +30,7 @@ export default function Awards({ number = '09' }) {
           aria-roledescription="carousel"
           aria-label="Recognition"
           tabIndex={0}
-          onKeyDown={(event) => {
-            if (event.key === 'ArrowRight') setIndex((index + 1) % awards.length)
-            if (event.key === 'ArrowLeft') setIndex((index + awards.length - 1) % awards.length)
-          }}
+          onKeyDown={onKeyDown}
         >
           <AnimatePresence mode="wait">
             <motion.div
@@ -41,10 +38,7 @@ export default function Awards({ number = '09' }) {
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.12}
-              onDragEnd={(_, info) => {
-                if (Math.abs(info.offset.x) > 45)
-                  setIndex((index + (info.offset.x < 0 ? 1 : awards.length - 1)) % awards.length)
-              }}
+              onDragEnd={onDragEnd}
               className="grid items-center gap-8 py-10 md:grid-cols-[1fr_1.3fr_auto]"
               style={{ touchAction: 'pan-y' }}
               initial={{ opacity: 0, y: 12, scale: 0.98 }}
@@ -71,13 +65,13 @@ export default function Awards({ number = '09' }) {
                 className="flex h-11 w-8 items-center"
                 aria-label={`Show ${item.name}`}
                 aria-pressed={index === i}
-                onClick={() => setIndex(i)}
+                onClick={() => go(i)}
               >
                 <span className={`h-0.5 w-full ${i === index ? 'bg-accent' : 'bg-white/20'}`} />
               </button>
             ))}
           </div>
-          <SliderControls index={index} total={awards.length} onChange={setIndex} label="award" />
+          <SliderControls index={index} total={awards.length} onChange={go} label="award" />
         </div>
       </Container>
     </section>

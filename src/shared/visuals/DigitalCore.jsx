@@ -8,7 +8,7 @@ import {
   useAnimationFrame,
   useReducedMotion,
 } from 'framer-motion'
-import useMediaQuery from '../../hooks/useMediaQuery'
+import useMediaQuery from '../hooks/useMediaQuery'
 export default function DigitalCore({ variant = 'hero', active = true }) {
   const ref = useRef(null)
   const visible = useInView(ref, { margin: '100px' })
