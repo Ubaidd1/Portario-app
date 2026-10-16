@@ -213,6 +213,8 @@ A feature folder follows the same shape:
 features/projects/
   index.js          Public API: the components other features may import
   components/       ProjectsSection, ProjectCard, ProjectMedia, ProjectDialog, ProjectGallery…
+    mocks/          One file per concept mock-up (FormaMock, NovaMock…), picked by ProjectVisual
+    case-study/     One component per case-study section, plus sections.js (order, visibility, numbering)
   data/             projects.js, caseStudies.js
   pages/            ProjectsPage, ProjectDetailPage (imported only by app/routes.js)
   projects.css      Styles for this feature, imported from styles/index.css
@@ -223,5 +225,7 @@ Conventions:
 - **Imports.** Use `@/` (which points at `src/`) when importing from another area, e.g. `import Container from '@/shared/components/Container'`. Use relative paths inside a feature. Import another feature's components from its `index.js` (`import { ProjectCard } from '@/features/projects'`), never from its internal files. Data is imported explicitly from `data/`.
 - **Pages stay out of `index.js`.** Pages are only imported by `app/routes.js` via `lazy()`, so each page stays its own chunk.
 - **Styles live with their feature.** Add a feature stylesheet next to its components and `@import` it in `src/styles/index.css`. Everything still goes through the one Tailwind entry point, so `@layer` and tokens work everywhere.
+- **One variant, one file.** Visual variants are separate components chosen through a lookup map: project mock-ups in `projects/components/mocks/`, service illustrations in `services/components/scenes/`. To add one, create the file and register it in the map in `ProjectVisual.jsx` or `ServiceVisual.jsx`.
+- **Section registries.** Long pages are assembled from small section components listed in a registry: `features/home/sections.js` for the homepage, `projects/components/case-study/sections.js` for case studies. Reorder, add or hide sections there; numbering follows automatically.
 - **Shared building blocks.** Use `useCarousel` for anything that slides (index wrapping, arrow keys, swipe), `AccordionItem` for disclosure lists, and `TagList` for tag rows.
 - **Adding a page.** Create it in the feature's `pages/`, add it to `app/routes.js`, and add its path to `publicRoutes()` in `vite.config.js` so it appears in the sitemap.
